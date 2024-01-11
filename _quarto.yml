@@ -6,7 +6,7 @@ website:
   favicon: pictures/icon.png
   page-footer:
     center:
-      - text: "<a href='terms.qmd'>Terms</a> <br> &#169 Joshua Philipp Entrop 2024"
+      - text: "<a href='/terms.html'>Terms</a> <br> &#169 Joshua Philipp Entrop 2024"
 
   navbar:
     left:
