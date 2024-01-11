@@ -7,7 +7,7 @@ tags: [R, logistic regression, manual optimisation]
 output: html_document
 ---
 
-In my <a href="https://www.joshua-entrop.com/post/optim_linear_reg/">last post</a> I used the <TT>optim()</TT> command to optimise a linear regression model. In this post, I am going to take that approach a little further and optimise a logistic regression model in the same manner. Thanks to John C. Nash, I got a first glimpse into the world of optimisation functions in <TT>R</TT>. His book showed me how important it is to compare the results of different optimisation algorithms. Where I used the <TT>base</TT> optimisation function <TT>optim()</TT> in my last post, I will use <TT>optimx()</TT> from the <TT>optimx</TT> package in this post. The <TT>optimx</TT> package and function were developed by Nash and colleagues as a wrapper of the <TT>base</TT> <TT>optim()</TT> function. There are numerous advantages in using <TT>optimx()</TT> instead of <TT>optim()</TT>. In my opinion, among the most important is an easier comparison between different optimisation methods. In case someone is more interested in the variety of optimisation functions and problems that come with them, I can warmly recommend John C. Nash's book <a href="https://www.wiley.com/en-us/Nonlinear+Parameter+Optimization+Using+R+Tools-p-9781118569283"><i>Nonlinear Parameter Optimisation Using R Tools</i></a>.
+In my <a href="/post/optim_linear_reg.html">last post</a> I used the <TT>optim()</TT> command to optimise a linear regression model. In this post, I am going to take that approach a little further and optimise a logistic regression model in the same manner. Thanks to John C. Nash, I got a first glimpse into the world of optimisation functions in <TT>R</TT>. His book showed me how important it is to compare the results of different optimisation algorithms. Where I used the <TT>base</TT> optimisation function <TT>optim()</TT> in my last post, I will use <TT>optimx()</TT> from the <TT>optimx</TT> package in this post. The <TT>optimx</TT> package and function were developed by Nash and colleagues as a wrapper of the <TT>base</TT> <TT>optim()</TT> function. There are numerous advantages in using <TT>optimx()</TT> instead of <TT>optim()</TT>. In my opinion, among the most important is an easier comparison between different optimisation methods. In case someone is more interested in the variety of optimisation functions and problems that come with them, I can warmly recommend John C. Nash's book <a href="https://www.wiley.com/en-us/Nonlinear+Parameter+Optimization+Using+R+Tools-p-9781118569283"><i>Nonlinear Parameter Optimisation Using R Tools</i></a>.
 
 However, coming back to my main focus: the optimisation of a logistic regression model using the <TT>optimx()</TT> function in R. For this, I would like to use the <TT>icu</TT> data set from the package <TT>aplore3</TT>. The data set contains data from 200 patients in an intensive care unit (ICU) and provides information whether the patient survived their stay or died. The particular question I would like to take a look at is whether the probability of dying during the ICU stay $P(Y = 1)$ is related to age $(x_1)$ and sex $(x_2)$. In order to do so, I firstly would like to load the data set and set up our variables:
 
@@ -33,15 +33,13 @@ icu$female <- ifelse(icu$gender == "Female", 1, 0)
 
 The specific model that I would like to use is:
 
-$$ P(Y|x_1, x_2) \sim \alpha + \beta_1  x_1 + \beta_2  x_2$$
-Using the logistic link-function we can find a linear function for the right side of the equation.
+$$ P(Y|x_1, x_2) \sim \alpha + \beta_1  x_1 + \beta_2  x_2$$ Using the logistic link-function we can find a linear function for the right side of the equation.
 
 $$ \ln \Bigg[ \frac{P(Y|x_1, x_2)}{1 - P(Y|x_1, x_2)} \Bigg] = \alpha + \beta_1  x_1 + \beta_2  x_2$$
 
 For this model, I would like to find the values $\alpha$, $\beta_1$ and $\beta_2$ that maximize the log-likelihood function and hence, provides the best fit to our empirical data provided in the <TT>icu</TT> data set. Therefore, we also need to define the log-likelihood function for our logistic regression model. According to <a href="https://www.wiley.com/en-us/Applied+Logistic+Regression%2C+3rd+Edition-p-9780470582473">Hosmer and Lemeshow</a> the log-likelihood function for a logistic regression model can be defined as
 
-$$ \sum_{i = 1}^{n}(y_i - \ln(\pi_i)) + (1 - y_i) * \ln(1 - \pi_i)). $$
-Where $\pi$ is defined using the sigmoid function as
+$$ \sum_{i = 1}^{n}(y_i - \ln(\pi_i)) + (1 - y_i) * \ln(1 - \pi_i)). $$ Where $\pi$ is defined using the sigmoid function as
 
 $$ P(Y|x_1, x_2) = \pi = \frac{\exp(\alpha + \beta_1  x_1 + \beta_2  x_2)}{1 + \exp(\alpha + \beta_1  x_1 + \beta_2  x_2)}. $$
 
@@ -76,12 +74,11 @@ negll <- function(par){
 }
 ```
 
-Additionally to our log-likelihood function, it is also useful to specify the gradient function for our log-likelihood. This is not necessary for all optimisation algorithms, however, it improves the testing for convergence. Hence, we can obtain better estimates by  also supplying the gradient function. According to Hosmer and Lemeshow, the gradient function of the log-likelihood function is defined as
+Additionally to our log-likelihood function, it is also useful to specify the gradient function for our log-likelihood. This is not necessary for all optimisation algorithms, however, it improves the testing for convergence. Hence, we can obtain better estimates by also supplying the gradient function. According to Hosmer and Lemeshow, the gradient function of the log-likelihood function is defined as
 
 $$
 g_\alpha(\pi) = \sum(y_i - \pi_i)
-$$
-$$
+$$ $$
 g_{x_j}(\pi) = \sum(x_{ji} * (y_i - \pi_i)).
 $$
 
@@ -89,8 +86,7 @@ In our case we yield 3 gradient functions
 
 $$
 g_\alpha(\pi) = \sum(y_i - \pi_i)
-$$
-$$
+$$ $$
 g_{x_1}(\pi) = \sum(x_{1_i} * (y_i - \pi_i))
 $$
 

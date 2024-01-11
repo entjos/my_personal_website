@@ -8,9 +8,9 @@ tags: [R, survival analysis, manual optimisation]
 draft: FALSE
 ---
 
-This blog post is a follow up on my [previous post](https://www.joshua-entrop.com/post/optim_weibull_reg/) on optimising a Weibull regression model using <TT>optimx()</TT>. This time I'll try to find a solution for the discrepancy between the confidence interval estimates of the Weibull hazard function estimated with <TT>optimx()</TT> and <TT>flexsurvreg()</TT>.
+This blog post is a follow up on my [previous post](/post/optim_weibull_reg.html) on optimising a Weibull regression model using <TT>optimx()</TT>. This time I'll try to find a solution for the discrepancy between the confidence interval estimates of the Weibull hazard function estimated with <TT>optimx()</TT> and <TT>flexsurvreg()</TT>.
 
-This post begins where my previous one ended. Hence, I suggest you to read my [previous post](https://www.joshua-entrop.com/post/optim_weibull_reg/) before reading this one. Also, I will use the <TT>R</TT> script of my previous post as starting point for this post. You can find the whole plain <TT>R</TT> script used in this post in <TT>.txt</TT> format [here](https://www.joshua-entrop.com/rcode/optim_weibull_reg_follow_up.txt).
+This post begins where my previous one ended. Hence, I suggest you to read my [previous post](/post/optim_weibull_reg.html) before reading this one. Also, I will use the <TT>R</TT> script of my previous post as starting point for this post. You can find the whole plain <TT>R</TT> script used in this post in <TT>.txt</TT> format [here](/rcode/optim_weibull_reg_follow_up.txt).
 
 ```{r include=FALSE}
 # 1. Prefix -------------------------------------------------------------------
