@@ -6,6 +6,54 @@ categories: [R]
 tags: [R, survival analysis]
 ---
 
+```{r, message=FALSE, echo=FALSE}
+# This script is internal and only used to create a picture accompanying the post
+
+# Loading packages
+library(rstpm2)
+library(RColorBrewer)
+
+# Initialising a new plot
+plot.new()
+plot.window(xlim = c(0, 1000),
+            ylim = c(0, 1))
+
+axis(1)
+axis(2)
+
+# Plotting hazard function with different DFs
+for (i in 2:8) {
+  
+  temp <- stpm2(Surv(rectime, censrec) ~ 1,
+                df   = i,
+                data = brcancer)
+  
+  temp_fit <- predict(temp,
+                      type = "haz",
+                      newdata = data.frame(rectime = seq(0, 1000, length = 300)),
+                      full = TRUE)
+  
+  lines(temp_fit$rectime,
+        temp_fit$Estimate * 1000,
+        col = brewer.pal(n = 8, name = 'Set2')[[i]])
+  
+}
+
+# Adding plot title
+title(main = "Plot of Hazard Rates With Different Degrees of Freedom",
+      xlab = "Time (days)",
+      ylab = "Hazard Rate per 1 000 person-years")
+
+# Adding plot legend
+legend("topleft",
+       paste("DF =", 2:8),
+       col = brewer.pal(n = 8, name = 'Set2')[2:8],
+       lty = 1,
+       bty = "n")
+
+```
+
+
 Have you ever encountered a situation in which you wanted to test different degrees of freedom (DF) for a generalised survival model? I encounter this situation quite frequently and after writing for loops for looping through the different combinations of DFs for different spline functions, I decided to write a R function that does this for me instead.
 
 In today's blog post I would like to introduce you to `fpm_test_dfs()`, which does exactly that. The function can be used to test combinations of DFs for different spline functions in a generalised survival model fitted with `rstpm2::stpm()`. However, before discussing about the function, I would like to quickly introduce the generalised survival model modeled on the log cumulative hazard function ($\ln H(t)$). In these models the baseline hazard function is modeled using a spline function of log time with a vector of knots $\mathbf{k}_0$ and parameters $\gamma$:
