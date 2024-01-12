@@ -7,33 +7,35 @@ toc: false
 ## 2023
 
 ### Reproduction patterns among non-Hodgkin lymphoma survivors by subtype in Sweden, Denmark and Norway: A population-based matched cohort study
+
 **Entrop JP**; Weibull CE; Smedby KE; Jakobsen LH; Øvlisen AK; Glimelius I; Marklund A; Larsen TS; Holte H; Fosså A; Smeland KB; El-Galaly TC; Eloranta S
 
-[PDF](https://doi.org/10.1111/bjh.18938){.btn .btn-outline-primary .btn role="button"}
-[Citation](bibtex/fertility_by_NHL_subtype.bib){.btn .btn-outline-primary .btn role="button"}
+[PDF](https://doi.org/10.1111/bjh.18938){.btn .btn-outline-primary .btn role="button"} [Citation](bibtex/fertility_by_NHL_subtype.bib){.btn .btn-outline-primary .btn role="button"}
+[OSF](https://osf.io/x5j2q){.btn .btn-outline-primary .btn role="button"}
 
 ### Reproduction patterns among classical Hodgkin lymphoma survivors treated with BEACOPP and ABVD in Sweden, Denmark and Norway-A population-based matched cohort study
+
 **Entrop JP**; Weibull CE; Smedby KE; Jakobsen LH; Øvlisen AK; Molin D; Glimelius I; Marklund A; Holte H; Fosså A; Smeland KB; El-Galaly TC; Eloranta S
 
-[PDF](https://doi.org/10.1002/ijc.34552){.btn .btn-outline-primary .btn role="button"}
-[Citation](bibtex/fertility_by_HL_trt.bib){.btn .btn-outline-primary .btn role="button"}
+[PDF](https://doi.org/10.1002/ijc.34552){.btn .btn-outline-primary .btn role="button"} [Citation](bibtex/fertility_by_HL_trt.bib){.btn .btn-outline-primary .btn role="button"}
+[OSF](https://osf.io/bw3mg){.btn .btn-outline-primary .btn role="button"}
 
 ### Nationwide Assessment of Patient Trajectories in Mantle Cell Lymphoma: The Swedish MCLcomplete Project
+
 Jerkeman M; Ekberg S; Glimelius I; Albertsson-Lindblad A; **Entrop JP**; Ellin F; Sonnevi K; Lewerin C; Brandefors L; Smedby KE
 
-[PDF](https://doi.org/10.1097/HS9.0000000000000928){.btn .btn-outline-primary .btn role="button"}
-[Citation](bibtex/MCL_trt_trajectories_sweden.bib){.btn .btn-outline-primary .btn role="button"}
+[PDF](https://doi.org/10.1097/HS9.0000000000000928){.btn .btn-outline-primary .btn role="button"} [Citation](bibtex/MCL_trt_trajectories_sweden.bib){.btn .btn-outline-primary .btn role="button"}
 
 ## 2021
 
 ### Parenthood Rates and Use of Assisted Reproductive Techniques in Younger Hodgkin Lymphoma Survivors: A Danish Population-Based Study
+
 Øvlisen AK; Jakobsen LH; Eloranta S; Kragholm KH; Hutchings M; Frederiksen H; Kamper P; Dahl-Sørensen RB; Stoltenberg D; Weibull CE; **Entrop JP**; Glimelius I; Smedby KE; Torp-Pedersen C; Severinsen MT; El-Galaly TC
 
-[PDF](https://doi.org/10.1200/JCO.21.00357){.btn .btn-outline-primary .btn role="button"}
-[Citation](bibtex/parenthood_rates_HL.bib){.btn .btn-outline-primary .btn role="button"}
+[PDF](https://doi.org/10.1200/JCO.21.00357){.btn .btn-outline-primary .btn role="button"} [Citation](bibtex/parenthood_rates_HL.bib){.btn .btn-outline-primary .btn role="button"}
 
 ### Type 2 diabetes risk in sarcoidosis patients untreated and treated with corticosteroids
+
 **Entrop JP**; Kullberg S; Grunewald J; Eklund A; Brismar K; Arkema EV
 
-[PDF](https://doi.org/10.1183/23120541.00028-2021 ){.btn .btn-outline-primary .btn role="button"}
-[Citation](bibtex/sacroidosis_T2D_risk.bib){.btn .btn-outline-primary .btn role="button"}
+[PDF](https://doi.org/10.1183/23120541.00028-2021){.btn .btn-outline-primary .btn role="button"} [Citation](bibtex/sacroidosis_T2D_risk.bib){.btn .btn-outline-primary .btn role="button"}
