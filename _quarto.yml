@@ -16,6 +16,8 @@ website:
         text: Blog
       - href: publications.qmd
         text: Publications
+      - href: software.qmd
+        text: Software
 
 format:
   html:
