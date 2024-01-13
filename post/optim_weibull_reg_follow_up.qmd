@@ -4,7 +4,7 @@ description: "This blog post is a follow up on my [previous post](/post/optim_we
 author: "Joshua Philipp Entrop"
 date: '2020-10-25'
 output: html_document
-categories: [Optimisation, R]
+categories: [Optimisation, R, survival analysis]
 tags: [R, survival analysis, manual optimisation]
 draft: FALSE
 ---

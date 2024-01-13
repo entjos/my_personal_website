@@ -3,7 +3,7 @@ title: "Optimisation of a stratified Cox model using Optimx()"
 description: "In this blog post we are going to fit a stratified Cox regression model by optimising its likelihood function with `Optimx::optimx()`. Stratified Cox regression models allow one to relax the assumption of proportional hazards over time between different exposure groups."
 author: "Joshua Philipp Entrop"
 date: "2021-04-12"
-categories: [Optimisation, R]
+categories: [Optimisation, R, survival analysis]
 tags: [R, survival analysis, manual optimisation]
 draft: FALSE
 ---

@@ -3,7 +3,7 @@ title: "Optimisation of a Weibull survival model using Optimx() in R"
 description: "In this blog post we will optimise a Weibull regression model by maximising its likelihood function using `optimx()` from the `{optimx}` package in R."
 author: "Joshua Philipp Entrop"
 date: '2020-09-28'
-categories: [Optimisation, R]
+categories: [Optimisation, R, survival analysis]
 tags: [R, survival analysis, manual optimisation]
 draft: FALSE
 ---

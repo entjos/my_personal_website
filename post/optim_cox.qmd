@@ -3,7 +3,7 @@ title: "Optimisation of a Cox proportional hazard model using Optimx()"
 description: "This blog post explains how one can manually optimise a Cox proportional hazard model using a maximum likelihood estimation (MLE) method in R without the use pre-defined functions."
 author: "Joshua Philipp Entrop"
 date: "2021-02-28"
-categories: [Optimisation, R]
+categories: [Optimisation, R, survival analysis]
 tags: [R, survival analysis, manual optimisation]
 draft: FALSE
 ---
