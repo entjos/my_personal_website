@@ -1,0 +1,106 @@
+################################################################################
+# Title: Testing degrees of freedom for generalised survival models in R
+#
+# Date: 2024-01-10
+#
+# Author: Joshua P. Entrop
+# Website: joshua-entrop.com
+################################################################################
+
+# 1. Script for creating title plot --------------------------------------------
+
+# NOTE: This script is internal and not shown in the blog post
+
+# Loading packages
+library(rstpm2)
+library(RColorBrewer)
+
+# Initialising a new plot
+plot.new()
+plot.window(xlim = c(0, 1000),
+            ylim = c(0, 1))
+
+axis(1)
+axis(2)
+
+# Plotting hazard function with different DFs
+for (i in 2:8) {
+
+  temp <- stpm2(Surv(rectime, censrec) ~ 1,
+                df   = i,
+                data = brcancer)
+
+  temp_fit <- predict(temp,
+                      type = "haz",
+                      newdata = data.frame(rectime = seq(0, 1000, length = 300)),
+                      full = TRUE)
+
+  lines(temp_fit$rectime,
+        temp_fit$Estimate * 1000,
+        col = brewer.pal(n = 8, name = 'Set2')[[i]])
+
+}
+
+# Adding plot title
+title(main = "Plot of Hazard Rates With Different Degrees of Freedom",
+      xlab = "Time (days)",
+      ylab = "Hazard Rate per 1 000 person-years")
+
+# Adding plot legend
+legend("topleft",
+       paste("DF =", 2:8),
+       col = brewer.pal(n = 8, name = 'Set2')[2:8],
+       lty = 1,
+       bty = "n")
+
+# 2. PREFIX --------------------------------------------------------------------
+
+# load rstpm2
+library(rstpm2)
+
+# install and use the entjosR package
+remotes::install_github("entjos/entjosR")
+library(entjosR)
+
+# 3. Checking for best fitting baseline hazard ---------------------------------
+
+dfs_test_model1 <- fpm_test_dfs(Surv(rectime, censrec) ~ 1,
+                                dfs_bh = 1:10,
+                                data   = brcancer)
+
+# Show table
+dfs_test_model1
+
+# Check which model fits best
+fpm_get_best_fit(dfs_test_model1)
+
+# 4. Test for best fitting spline fuction for time-varying effects -------------
+
+dfs_test_model2 <- fpm_test_dfs(Surv(rectime, censrec) ~ hormon + x1,
+                                dfs_bh  = 4,
+                                dfs_tvc = list(hormon = 1:4,
+                                               x1     = 1:4),
+                                data    = brcancer)
+
+# Show table
+dfs_test_model2
+
+# Check which model fits best
+fpm_get_best_fit(dfs_test_model2)
+
+# 5. Check for best fitting models stratified by hormonal therapy use ----------
+
+dfs_test_model3 <- fpm_test_dfs(Surv(rectime, censrec) ~ x1,
+                                dfs_bh  = 1:5,
+                                dfs_tvc = list(x1 = 1),
+                                by_vars = "hormon",
+                                data    = brcancer)
+
+# Show table
+dfs_test_model3
+
+# Check which models fit best
+fpm_get_best_fit(dfs_test_model3)
+
+# //////////////////////////////////////////////////////////////////////////////
+# END OF R-SCRIPT

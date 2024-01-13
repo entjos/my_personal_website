@@ -1,12 +1,12 @@
 ---
 title: "Testing degrees of freedom for generalised survival models in R"
+description: "Have you ever encountered a situation in which you wanted to test different degrees of freedom (DF) for a generalised survival model? This blog post introduces a R function that helps use finding the best fitting spline functions for you generalised survival model."
 author: "Joshua Philipp Entrop"
 date: "2024-01-10"
-categories: [R]
-tags: [R, survival analysis]
+categories: [R, survival analysis]
 ---
 
-```{r, message=FALSE, echo=FALSE}
+```{r, message=FALSE, warning=FALSE, echo=FALSE}
 # This script is internal and only used to create a picture accompanying the post
 
 # Loading packages
@@ -53,6 +53,7 @@ legend("topleft",
 
 ```
 
+[R Code](/rcode/fpm_test_dfs.txt){.btn .btn-outline-primary .btn role="button"}
 
 Have you ever encountered a situation in which you wanted to test different degrees of freedom (DF) for a generalised survival model? I encounter this situation quite frequently and after writing for loops for looping through the different combinations of DFs for different spline functions, I decided to write a R function that does this for me instead.
 

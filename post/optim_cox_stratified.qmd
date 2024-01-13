@@ -1,5 +1,6 @@
 ---
 title: "Optimisation of a stratified Cox model using Optimx()"
+description: "In this blog post we are going to fit a stratified Cox regression model by optimising its likelihood function with `Optimx::optimx()`. Stratified Cox regression models allow one to relax the assumption of proportional hazards over time between different exposure groups."
 author: "Joshua Philipp Entrop"
 date: "2021-04-12"
 categories: [Optimisation, R]
@@ -7,16 +8,18 @@ tags: [R, survival analysis, manual optimisation]
 draft: FALSE
 ---
 
+[R Code](/rcode/optim_cox_stratified.txt){.btn .btn-outline-primary .btn role="button"}
+
 ```{r, include=FALSE}
 knitr::opts_chunk$set(warning = FALSE,
                       cache = TRUE)
 ```
 
-In this blog post we are going to fit a stratified Cox regression model by optimising its likelihood function with <TT>Optimx::optimx()</TT>. Stratified Cox regression models allow one to relax the assumption of proportional hazards over time between different exposure groups. This is the main assumption we usually have to make when using Cox regression models. However, to assume proportional hazards is in most situations a quite unrealistic and not sensitive assumption. In this post we will discuss one way to relax this assumption in situations in which one is not interested in the effect estimates of the variable for which we assume non-proportional hazards. This post is a follow-up of my [post](/post/optim_cox.html) on Cox proportional hazard models. Hence, I will skip some of the parts which are explained there. If you're interested you can download the <TT>R</TT> code used in this blog post as <TT>.txt</TT> file [here](/rcode/optim_cox_stratified.txt).
+In this blog post we are going to fit a stratified Cox regression model by optimising its likelihood function with `Optimx::optimx()`. Stratified Cox regression models allow one to relax the assumption of proportional hazards over time between different exposure groups. This is the main assumption we usually have to make when using Cox regression models. However, to assume proportional hazards is in most situations a quite unrealistic and not sensitive assumption. In this post we will discuss one way to relax this assumption in situations in which one is not interested in the effect estimates of the variable for which we assume non-proportional hazards. This post is a follow-up of my [post](/post/optim_cox.html) on Cox proportional hazard models. Hence, I will skip some of the parts which are explained there. If you're interested you can download the `R` code used in this blog post as `.txt` file [here](/rcode/optim_cox_stratified.txt).
 
 The term stratification usually refers to a situation in which we split our dataset according to some variables $Z$ in order to allow interactions between these variables and other independent variables $\mathbf{X}$ in the model. Using stratification in this way allows us to obtain a separate effect estimate for our exposure of interest for each strata of $Z$. However, when we talk about stratification in the context of Cox regression models, we refer to a slightly different concept. Stratification in a stratified Cox model does not allow for interaction between $Z$ and $\mathbf{X}$. It instead allows for non-proportional hazards of $Z$ across time $t$, by assuming different baseline hazards $h_{0z}(t)$ within each strata. However, since we don't model the baseline hazard when fitting a Cox regression model, we cannot obtain estimates for the effect of $Z$ when fitting a stratified Cox regression model.
 
-Let's take a look at an example. For this post we will use the <TT>survival::lung</TT> dataset again. For more information on the dataset see <TT>?survival::lung</TT>. This time we will model the effect of age and physical functioning measured using the ECOG score on survival of patients with advanced lung cancer. First, we need to set up our data set and remove ties of event times for demonstration purposes as we did in the previous posts.
+Let's take a look at an example. For this post we will use the `survival::lung` dataset again. For more information on the dataset see `?survival::lung`. This time we will model the effect of age and physical functioning measured using the ECOG score on survival of patients with advanced lung cancer. First, we need to set up our data set and remove ties of event times for demonstration purposes as we did in the previous posts.
 
 ```{r, warning = FALSE, message = FALSE}
 # 1. Prefix -------------------------------------------------------------------
@@ -49,7 +52,7 @@ lung$time <- map_dbl(lung$time,
                      function(x){x + runif(1, -0.1, +0.1)})
 ```
 
-We are now going to fit a common Cox proportional hazard model with <TT>survival::coxph()</TT>. Afterwards, we can check the proportionality assumption for each covariate in the model using Schönefeld residuals. For this we will use the <TT>survival::cox.zph()</TT> function.
+We are now going to fit a common Cox proportional hazard model with `survival::coxph()`. Afterwards, we can check the proportionality assumption for each covariate in the model using Schönefeld residuals. For this we will use the `survival::cox.zph()` function.
 
 ```{r, warning = FALSE, message = FALSE}
 # 3. Check for non-proportional effect in our simple cox-model ----------------
@@ -64,7 +67,7 @@ cox.zph(cox_model)
 
 The output gives us a test of non-proportionality of effects for each variable. The null hypothesis for this test is proportionality of effects. Hence, small p-values gives us a hint whether we can assume that the effect of certain covariates is not proportional over time. However, assuming proportionality of effects is always a strong assumption and hence, it might nevertheless be useful to fit a model that relaxes this assumption at least for some variables.
 
-In our example it looks like there might be a non-proportional effect for the variables <TT>ecog_high</TT> and <TT>female</TT>. We cannot use our method of stratification in Cox models to account for non-proportional effects of <TT>ecog_high</TT>, since <TT>ecog_high</TT> is our exposure of interest and we therefore want to obtain an estimate of its effect on survival. In our example, <TT>female</TT> is a variable we use for adjustment and for the sake of demonstration we are not interested in its effect estimate. Hence, we can use a stratified Cox model for sex to deal with the non-proportionality of its effect on survival.
+In our example it looks like there might be a non-proportional effect for the variables `ecog_high` and `female`. We cannot use our method of stratification in Cox models to account for non-proportional effects of `ecog_high`, since `ecog_high` is our exposure of interest and we therefore want to obtain an estimate of its effect on survival. In our example, `female` is a variable we use for adjustment and for the sake of demonstration we are not interested in its effect estimate. Hence, we can use a stratified Cox model for sex to deal with the non-proportionality of its effect on survival.
 
 To conclude, for the rest of the blog post we are going to fit a stratified Cox proportional hazard model for the effect of high ECOG score stratified by sex. The Cox model in its general form follows:
 
@@ -74,7 +77,7 @@ In our case we will fit the following Cox model including the independent variab
 
 $$ \lambda(t|X) = \lambda_0(t) \exp(\beta_1  x_{1} + \beta_2  x_{2}). $$
 
-Now you might wonder where we left our third covariate <TT>female</TT>. This covariate is now used in our likelihood function to allow for different baseline hazards $h_{0Z}(t)$ with $Z$ equals to the strata of <TT>female</TT>. The log-likelihood for our stratified Cox model in this case is the sum of the log-likelihood values across strata of $Z$ i.e. values of <TT>female</TT>. Formally, we can define our log-likelihood function as
+Now you might wonder where we left our third covariate `female`. This covariate is now used in our likelihood function to allow for different baseline hazards $h_{0Z}(t)$ with $Z$ equals to the strata of `female`. The log-likelihood for our stratified Cox model in this case is the sum of the log-likelihood values across strata of $Z$ i.e. values of `female`. Formally, we can define our log-likelihood function as
 
 $$ 
 \begin{split}
@@ -84,7 +87,7 @@ $$
 
 where $\theta_z = \exp(\beta X_z)$ and $d_{zi}$ is the event indicator for the $i^{th}$ subject within the $z^{th}$ strata. If we plug in our independent variables from above we yield $\theta_z = \exp(\beta_1 x_{z1} + \beta_2 x_{z2})$ for our specific case. Note, that the coefficients $\beta_1$ and $\beta_2$ are the same in all strata of $Z$. That is the reason why we do not obtain different effect estimates across levels of $Z$. We assume that the effect of $\beta_1$ and $\beta_2$ is still the same in all strata of $Z$. This is fundamentally different to the usual concept of stratification where we would assume that $\beta_1$ and $\beta_2$ change across strata of $Z$.
 
-Now, lets take this formula and write it as a function in <TT>R</TT>. Also this time we will compute $\sum_{j:t_j\geq t_i} \theta_{zj}$ using the <TT>base::cumsum()</TT> function to calculate the cumulative sum of $\theta_j$ across the event times $t$ in descending order. Only this time we will calculate two $\theta_{zj}$ one for each strata of female, i.e. males and females.
+Now, lets take this formula and write it as a function in `R`. Also this time we will compute $\sum_{j:t_j\geq t_i} \theta_{zj}$ using the `base::cumsum()` function to calculate the cumulative sum of $\theta_j$ across the event times $t$ in descending order. Only this time we will calculate two $\theta_{zj}$ one for each strata of female, i.e. males and females.
 
 ```{r}
 # 4. Define log-likelihood function for stratified Cox regression model -------
@@ -134,7 +137,7 @@ In our case we yield the following two gradient functions for $\beta_1$ and $\be
 
 $$ \ln L'(\beta_1) = \sum_{z} \sum_{i} d_{zi} \bigg(x_{1zi} - \frac{\sum_{j:t_j\geq t_i} \theta_{zj} x_{1zj}}{\sum_{j:t_j\geq t_i} \theta_{zj}} \bigg)$$
 
-$$ \ln L'(\beta_2) = \sum_{z} \sum_{i} d_{zi} \bigg(x_{2zi} - \frac{\sum_{j:t_j\geq t_i} \theta_{zj} x_{2zj}}{\sum_{j:t_j\geq t_i} \theta_{zj}} \bigg)$$ We can now write these as functions in <TT>R</TT>, where each gradient function will be the sum of gradient functions within each strata.
+$$ \ln L'(\beta_2) = \sum_{z} \sum_{i} d_{zi} \bigg(x_{2zi} - \frac{\sum_{j:t_j\geq t_i} \theta_{zj} x_{2zj}}{\sum_{j:t_j\geq t_i} \theta_{zj}} \bigg)$$ We can now write these as functions in `R`, where each gradient function will be the sum of gradient functions within each strata.
 
 ```{r}
 # 5. Define gradient function for stratified Cox regression model -------------
@@ -192,7 +195,7 @@ negll_grad <- function(par){
 
 From here onward we can just use the same process as we did in the [previous blog post](/post/optim_cox.html) on optimising a Cox regression model.
 
-We first compare our gradient function with its approximation calculated with the <TT>numDerive::grad()</TT> function to see if we specified the function correctly.
+We first compare our gradient function with its approximation calculated with the `numDerive::grad()` function to see if we specified the function correctly.
 
 ```{r}
 # 5.1 Compare gradient function with numeric approximation of gradient ========
@@ -205,7 +208,7 @@ all.equal(mygrad, numgrad)
 
 Looks like we get the same numbers and our gradient functions works fine.
 
-Now we pass both our log-likelihood and gradient function on to our <TT>optimx()</TT> call.
+Now we pass both our log-likelihood and gradient function on to our `optimx()` call.
 
 ```{r}
 # 6. Find minimum of log-likelihood function ----------------------------------
@@ -225,9 +228,9 @@ summary(opt, order = "value") %>%
   head(5)
 ```
 
-Most optimisation algorithms implemented in the <TT>{optimx}</TT> yield very similar likelihood values. This is a good indication that we actually found the maximum likelihood estimate for our coefficients.
+Most optimisation algorithms implemented in the `{optimx}` yield very similar likelihood values. This is a good indication that we actually found the maximum likelihood estimate for our coefficients.
 
-Let us now compare our estimates with the estimates we would obtain from the <TT>survival::coxph()</TT> function.
+Let us now compare our estimates with the estimates we would obtain from the `survival::coxph()` function.
 
 ```{r}
 # 7. Estimate regression coefficients using coxph  ----------------------------
@@ -257,7 +260,7 @@ lapply(1:nrow(coef_opt), function(i){
   arrange(mean_dif)
 ```
 
-We can see that the mean difference between our estimates and the estimates yielded with the <TT>survival::coxph()</TT> model is small for most of our models, especially for the estimates obtained with the <TT>nlm</TT> algorithm.
+We can see that the mean difference between our estimates and the estimates yielded with the `survival::coxph()` model is small for most of our models, especially for the estimates obtained with the `nlm` algorithm.
 
 At the end let us just compute the standard error for our estimates using the hessian matrix. For some more explanation take a look at this [previous blog post](/post/optim_logit_reg_se.html).
 

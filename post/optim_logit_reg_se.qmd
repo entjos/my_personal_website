@@ -1,5 +1,6 @@
 ---
 title: "Estimating Standard Errors for a Logistic Regression Model optimised with Optimx in R"
+description: "In my previous I estimated the point estimates for a logistic regression model using `optimx()` from the `optimx` package in `R`. In this post I would like to contine with this model an try to find the standard error (SE) for the derived estimates."
 author: "Joshua Philipp Entrop"
 date: '2020-06-25'
 output: html_document
@@ -7,7 +8,9 @@ categories: [Optimisation, R]
 tags: [R, logistic regression, manual optimisation]
 ---
 
-```{R, include = FALSE}
+[R Code](/rcode/optim_logit_reg_se.txt){.btn .btn-outline-primary .btn role="button"}
+
+```{r, include = FALSE}
 ###############################################################################
 # Title: Optimisation of a Logistic Regression Model
 # Date: 2020-05-26
@@ -134,13 +137,13 @@ lapply(1:nrow(coef_opt), function(i){
   arrange(mean_dif)
 ```
 
-In my <a href="/optim_logit_reg.html">last post</a> I estimated the point estimates for a logistic regression model using <TT>optimx()</TT> from the <TT>optimx</TT> package in <TT>R</TT>. In this post I would like to contine with this model an try to find the standard error (SE) for the derived estimates. Uncertainty is probably the most important quantity in statistics and therefore I think it is worthwhile to look a lite bit more into this. However, before, we can start with the estimation of the SEs, I would ask you to run the code for deriving the point estimates for the logistic regression using <TT>optimx()</TT>, which you can find <a href="/rcode/optim_logit_reg.txt/">here</a>. This will be the starting point for our further calculations.
+In my <a href="/optim_logit_reg.html">last post</a> I estimated the point estimates for a logistic regression model using `optimx()` from the `optimx` package in `R`. In this post I would like to contine with this model an try to find the standard error (SE) for the derived estimates. Uncertainty is probably the most important quantity in statistics and therefore I think it is worthwhile to look a lite bit more into this. However, before, we can start with the estimation of the SEs, I would ask you to run the code for deriving the point estimates for the logistic regression using `optimx()`, which you can find <a href="/rcode/optim_logit_reg.txt">here</a>. This will be the starting point for our further calculations.
 
-When I searched for an answer to solve the problem of estimating the SE using the output of <TT>optimx()</TT> in R, I came across this quite old <a href="https://stat.ethz.ch/pipermail/r-help/2004-February/046272.html">email</a> from 2004 on the R-help email list and a <a href="https://stats.stackexchange.com/questions/27033/in-r-given-an-output-from-optim-with-a-hessian-matrix-how-to-calculate-paramet">discussion</a> on stackexchange. Basically it says that we can compute the covariance matrix as the inverse of the negative of the Hessian matrix. Given our estimated covariance matrix, we can then estimate the SE as the square root of the diagonal elements of our covariance matrix.
+When I searched for an answer to solve the problem of estimating the SE using the output of `optimx()` in R, I came across this quite old <a href="https://stat.ethz.ch/pipermail/r-help/2004-February/046272.html">email</a> from 2004 on the R-help email list and a <a href="https://stats.stackexchange.com/questions/27033/in-r-given-an-output-from-optim-with-a-hessian-matrix-how-to-calculate-paramet">discussion</a> on stackexchange. Basically it says that we can compute the covariance matrix as the inverse of the negative of the Hessian matrix. Given our estimated covariance matrix, we can then estimate the SE as the square root of the diagonal elements of our covariance matrix.
 
-So, lets try to implement this in <TT>R</TT>. First we need to extract the Hessian matrix from our <TT>optimx()</TT> result object. Note, that you need to set the option <TT>hessian = TRUE</TT> in your <TT>optimx()</TT> call. This asks <TT>optimx()</TT> to estimate the Hessian matrix for the different optimization algorithms and allows us to obtain this information after the optimization is finished. In the example below, I only obtain the Hessian matrix for the optimization algorithm <TT>Rcgmin</TT>, since it showed the best fit compared to the results from the <TT>glm()</TT> model.
+So, lets try to implement this in `R`. First we need to extract the Hessian matrix from our `optimx()` result object. Note, that you need to set the option `hessian = TRUE` in your `optimx()` call. This asks `optimx()` to estimate the Hessian matrix for the different optimization algorithms and allows us to obtain this information after the optimization is finished. In the example below, I only obtain the Hessian matrix for the optimization algorithm `Rcgmin`, since it showed the best fit compared to the results from the `glm()` model.
 
-```{R, warning=FALSE}
+```{r, warning=FALSE}
 # 7. Estimate the standard error ----------------------------------------------
 
 #Extract hessian matrix for Rcgmin optimisation
@@ -149,15 +152,15 @@ hessian_m <- attributes(opt)$details["Rcgmin", "nhatend"][[1]]
 
 After we extracted the Hessian matrix, we can follow the procedure described above. Also note, that I used the Hessian matrix, instead of the negative Hessian matrix in my example. When I used the negative Hessian matrix, I got negative values for the diagonal values of the inverse. Hence, I was not able to obtain the squared root of these values. Also, I obtained the correct SEs using this approach.
 
-```{R, warning=FALSE}
+```{r, warning=FALSE}
 # Estimate se based on hession matrix
 fisher_info <- solve(hessian_m)
 prop_se  <- sqrt(diag(fisher_info))
 ```
 
-Now were we obtained our estimates for the SEs, it would be interesting to compare them with the results of a <TT>glm()</TT> call, that tries to fit the same model as we do.
+Now were we obtained our estimates for the SEs, it would be interesting to compare them with the results of a `glm()` call, that tries to fit the same model as we do.
 
-```{R, warning=FALSE}
+```{r, warning=FALSE}
 # Compare the estimated se from our model with the one from the glm
 ses <- data.frame(se_Rcgmin = prop_se, 
                   se_glm = tidy(glm_model)$std.error) %>%
@@ -166,9 +169,9 @@ ses <- data.frame(se_Rcgmin = prop_se,
 all.equal(ses[,"se_Rcgmin"], ses[, "se_glm"])
 ```
 
-The differences between the estimates of the SEs using the Hessian matrix and the <TT>glm()</TT> model are very small. It seems like our approach did a fairly good job. Hence, we can now use our SE estimates to compute the 95%CIs of our point estimates.
+The differences between the estimates of the SEs using the Hessian matrix and the `glm()` model are very small. It seems like our approach did a fairly good job. Hence, we can now use our SE estimates to compute the 95%CIs of our point estimates.
 
-```{R, warning=FALSE}
+```{r, warning=FALSE}
 # 8. Estimate 95%CIs using estimation of SE -----------------------------------
 
 # Extracting estimates from Rcgmin optimisaiton
@@ -182,4 +185,4 @@ lower <- coef_test - 1.96 * prop_se
 data.frame(coef_test, lower=lower, upper=upper, se = prop_se)
 ```
 
-Combining this and my previous post on <a href="/post/optim_logit_reg.html">optimizing a logistic regression using optimx()</a>, we were able to more or less manually obtain the results of a logistic regression model, that we would commonly obtain using the <TT>glm()</TT> function.
+Combining this and my previous post on <a href="/post/optim_logit_reg.html">optimizing a logistic regression using optimx()</a>, we were able to more or less manually obtain the results of a logistic regression model, that we would commonly obtain using the `glm()` function.

@@ -1,0 +1,69 @@
+################################################################################
+# Title: {ExclusionTable} a package for keeping track of exclusions
+#        and inclusions
+# Date: 2021-11-01
+#
+# Author: Joshua P. Entrop
+# Website: joshua-entrop.com
+################################################################################
+
+# 1. Prefix --------------------------------------------------------------------
+
+# Load packages
+library(NHANES)  # NHANES dataset
+library(dplyr)   # Data manipulation
+library(remotes) # Install packages from GitHub
+
+# Attach data
+data("NHANES")
+
+# Install {ExclusionTable} from GitHub
+remotes::install_github("entjos/ExclusionTable",
+                        ref = "main")
+
+# Load package
+library(ExclusionTable)
+
+# 2. Use the ExclusionTable Package --------------------------------------------
+
+#   2.1 Simple example with two inclusions and one  exclusion ==================
+exclusion_table(NHANES,
+                inclusion_criteria = c("Gender == 'female'",
+                                       "Age    >= 65"),
+                exclusion_criteria = "is.na(BMI)",
+                keep_data = FALSE)
+
+#   2.2 Adding labels for inclusion criteria ===================================
+exclusion_table(NHANES,
+                inclusion_criteria = c("Gender == 'female'",
+                                       "Age    >= 65"),
+                exclusion_criteria = "is.na(BMI)",
+                labels_inclusion   = c("Get females",
+                                       "Age is >= 65"),
+                labels_exclusion   = "Missing BMI",
+                keep_data = FALSE)
+
+#   2.3 Keeping the new dataset ================================================
+NHANES_ex_tab <-
+  exclusion_table(NHANES,
+                  inclusion_criteria = c("Gender == 'female'",
+                                         "Age    >= 65"),
+                  exclusion_criteria = "is.na(BMI)",
+                  labels_inclusion   = c("Get females",
+                                         "Age is >= 65"),
+                  labels_exclusion   = "Missing BMI",
+                  keep_data = TRUE)
+
+# Extracting the new dataset
+NAHANES_cleaned <- NHANES_ex_tab[["dataset"]]
+
+#   2.4 Using objects in the enviroment in the ExclusionTable call =============
+room_selection <- c(2, 4, 9)
+
+exclusion_table(NHANES,
+                inclusion_criteria = c("HomeRooms %in% obj$room_selection"),
+                labels_inclusion   = c("2, 4, 9 rooms"),
+                obj = list(room_selection = room_selection))
+
+# //////////////////////////////////////////////////////////////////////////////
+# END OF R-SCRIPT

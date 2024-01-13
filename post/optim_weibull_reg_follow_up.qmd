@@ -1,5 +1,6 @@
 ---
 title: "Comparing the confidence intervals of a Weibull model estimated with flexsurvreg() and optimx()"
+description: "This blog post is a follow up on my [previous post](/post/optim_weibull_reg.html) on optimising a Weibull regression model using `optimx()`. This time I'll try to find a solution for the discrepancy between the confidence interval estimates of the Weibull hazard function estimated with `optimx()` and `flexsurvreg()`."
 author: "Joshua Philipp Entrop"
 date: '2020-10-25'
 output: html_document
@@ -8,9 +9,11 @@ tags: [R, survival analysis, manual optimisation]
 draft: FALSE
 ---
 
-This blog post is a follow up on my [previous post](/post/optim_weibull_reg.html) on optimising a Weibull regression model using <TT>optimx()</TT>. This time I'll try to find a solution for the discrepancy between the confidence interval estimates of the Weibull hazard function estimated with <TT>optimx()</TT> and <TT>flexsurvreg()</TT>.
+[R Code](/rcode/optim_weibull_reg_follow_up.txt){.btn .btn-outline-primary .btn role="button"}
 
-This post begins where my previous one ended. Hence, I suggest you to read my [previous post](/post/optim_weibull_reg.html) before reading this one. Also, I will use the <TT>R</TT> script of my previous post as starting point for this post. You can find the whole plain <TT>R</TT> script used in this post in <TT>.txt</TT> format [here](/rcode/optim_weibull_reg_follow_up.txt).
+This blog post is a follow up on my [previous post](/post/optim_weibull_reg.html) on optimising a Weibull regression model using `optimx()`. This time I'll try to find a solution for the discrepancy between the confidence interval estimates of the Weibull hazard function estimated with `optimx()` and `flexsurvreg()`.
+
+This post begins where my previous one ended. Hence, I suggest you to read my [previous post](/post/optim_weibull_reg.html) before reading this one. Also, I will use the `R` script of my previous post as starting point for this post. You can find the whole plain `R` script used in this post in `.txt` format [here](/rcode/optim_weibull_reg_follow_up.txt).
 
 ```{r include=FALSE}
 # 1. Prefix -------------------------------------------------------------------
@@ -229,7 +232,7 @@ legend("topleft",
        box.lty = 0)
 ```
 
-This is the figure where my last post ended. I compared the hazard function $h(t)$ of the Weibull model estimated manually using <TT>optimx()</TT> with the hazard function of an identical model estimated with <TT>flexsurvreg()</TT>. Interestingly, the hazard functions were identical, but there were considerable differences in the estimates of the confidence intervals across follow-up time, as you can see in the figure above. Unfortunately, I couldn't come up with an explanation for this discrepancy. However, I was lucky and got help from [Andrea Discacciati](https://staff.ki.se/people/anddis), a colleague at Karolinska Institutet. He pointed out that the <TT>flexsurvreg()</TT> function from the <TT>{flexsurvreg}</TT> package uses the log-hazard function ($\ln h(t)$) for estimating confidence intervals whereas I used the hazard function ($h(t)$) in my post instead. Working on the log-scale allows to transform the multiplicative components of the hazard function into additive components, since $\ln xy = \ln x + \ln y$. This is usually done to increase the precision of the computation process, since multiplication usually comes with a higher loss in precision compared to summation. Hence, using the hazard function instead of the log-hazard function might lead to the difference in the estimates for the confidence intervals of the hazard functions, that we can see in the figure above.
+This is the figure where my last post ended. I compared the hazard function $h(t)$ of the Weibull model estimated manually using `optimx()` with the hazard function of an identical model estimated with `flexsurvreg()`. Interestingly, the hazard functions were identical, but there were considerable differences in the estimates of the confidence intervals across follow-up time, as you can see in the figure above. Unfortunately, I couldn't come up with an explanation for this discrepancy. However, I was lucky and got help from [Andrea Discacciati](https://staff.ki.se/people/anddis), a colleague at Karolinska Institutet. He pointed out that the `flexsurvreg()` function from the `{flexsurvreg}` package uses the log-hazard function ($\ln h(t)$) for estimating confidence intervals whereas I used the hazard function ($h(t)$) in my post instead. Working on the log-scale allows to transform the multiplicative components of the hazard function into additive components, since $\ln xy = \ln x + \ln y$. This is usually done to increase the precision of the computation process, since multiplication usually comes with a higher loss in precision compared to summation. Hence, using the hazard function instead of the log-hazard function might lead to the difference in the estimates for the confidence intervals of the hazard functions, that we can see in the figure above.
 
 So let's try to use the log-hazard instead of the hazard for the computation of our survival function together with its confidence intervals. First the hazard function is, as explained in my previous post, defined by
 
@@ -339,8 +342,8 @@ mapply(df = list(haz_optim_female, haz_optim_female_log),
 )
 ```
 
-In this figure we can see the hazard function and its confidence interval (gray area) for both computation approaches. The estimates yielded by working on the identity scale are shwon on the left and the estimates yieled by working on the log-scale are shown on the right. At the same time we see the estimates yielded by estimating the same model with <TT>flexsurvreg()</TT> (red lines). As we can see, working on the log-scale yielded estimates very much closer to the estimates obtained with <TT>flexsurvreg()</TT> compared to the model using the identity scale.
+In this figure we can see the hazard function and its confidence interval (gray area) for both computation approaches. The estimates yielded by working on the identity scale are shwon on the left and the estimates yieled by working on the log-scale are shown on the right. At the same time we see the estimates yielded by estimating the same model with `flexsurvreg()` (red lines). As we can see, working on the log-scale yielded estimates very much closer to the estimates obtained with `flexsurvreg()` compared to the model using the identity scale.
 
-Hence, it seems as this difference between working on the identity and log-scale for computing the confidence intervals may explain a big part of the discrepancy between the confidence intervals obtained with <TT>flexsurvreg()</TT> and <TT>optimx()</TT>, which we can see in the first figure above. The remaining differences are likely due to the fact, that the <TT>flexsurvreg()</TT> function uses the bootstrap method instead of the delta method to estimate confidence intervals for the hazard function.
+Hence, it seems as this difference between working on the identity and log-scale for computing the confidence intervals may explain a big part of the discrepancy between the confidence intervals obtained with `flexsurvreg()` and `optimx()`, which we can see in the first figure above. The remaining differences are likely due to the fact, that the `flexsurvreg()` function uses the bootstrap method instead of the delta method to estimate confidence intervals for the hazard function.
 
 In this post we compared the confidence intervals of a hazard function obtained by applying the delta method to the hazard function on the identity scale ($h(t)$) and on the log-scale ($\ln h(t)$). As [Andrea Discacciati](https://staff.ki.se/people/anddis) pointed out both approaches assymptotically yield the same results. However, working on the log-hazard scale is favorable for finite samples.

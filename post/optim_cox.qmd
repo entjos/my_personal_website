@@ -1,5 +1,6 @@
 ---
 title: "Optimisation of a Cox proportional hazard model using Optimx()"
+description: "This blog post explains how one can manually optimise a Cox proportional hazard model using a maximum likelihood estimation (MLE) method in R without the use pre-defined functions."
 author: "Joshua Philipp Entrop"
 date: "2021-02-28"
 categories: [Optimisation, R]
@@ -7,15 +8,17 @@ tags: [R, survival analysis, manual optimisation]
 draft: FALSE
 ---
 
+[R Code](/rcode/optim_cox.txt){.btn .btn-outline-primary .btn role="button"}
+
 ```{r, include=FALSE}
 knitr::opts_chunk$set(warning = FALSE)
 ```
 
-In this blog post we will optimise a Cox proportional hazard model using a maximum likelihood estimation (MLE) method. For this we are first going to define the likelihood function of our Cox model and its partial first derivatives, sometimes called the score function. Later we will pass these function to different optimisation algorithms using <TT>optimx::optimx()</TT> to obtain the most likley estimates of our model parameters. You can find the R-script I used for this post as <TT>.txt</TT> file [here](/rcode/optim_cox.txt).
+In this blog post we will optimise a Cox proportional hazard model using a maximum likelihood estimation (MLE) method. For this we are first going to define the likelihood function of our Cox model and its partial first derivatives, sometimes called the score function. Later we will pass these function to different optimisation algorithms using `optimx::optimx()` to obtain the most likley estimates of our model parameters. You can find the R-script I used for this post as `.txt` file [here](/rcode/optim_cox.txt).
 
 The Cox proportional hazard model is probably the most commonly applied model for survival analysis in epidemiological research. Cox models offer a efficient way to adjust for the underlying time scale $t$ which otherwise requires more complex parametric models. In those models e.g. in the [Poisson](/post/optim_pois_reg.html) or [Weibull](/post/optim_weibull_reg.html) model there are two ways of adjusting for the underlying time scale: either one uses a time splitting approach where the time $t$ gets split into multiple time intervals which are added as covariates to the model or one uses a spline function to model the effect of the underlying time scale. Both approaches need assumptions about the shape of the effect of the underlying time scale e.g. the time points used for the splitting or the degrees of freedom of the spline function. Additionally, both approaches add multiple parameters to the model. Fitting these more complex parametric models might be a challenge when facing limited data. The Cox model instead only needs one assumption to be able to adjust for the underlying time scale i.e. the effect of the exposure is assumed to be proportional over time. This assumption is known as the proportional hazard assumption and is subject to many debates. Furthermore, the Cox model does not need any additional parameters for adjusting for the time scale $t$. Hence, it can also be used to analyse more limited data.
 
-As in my previous blog posts, we will use the lung cancer data set included in the <TT>{survival}</TT> package as an example. For more information on this data set please take a look at the help file <TT>?survival::lung</TT> Specifically, we will model the effect of sex and age on the survival of lung cancer patients in this data set. To estimate this effect, we will use a Cox model.
+As in my previous blog posts, we will use the lung cancer data set included in the `{survival}` package as an example. For more information on this data set please take a look at the help file `?survival::lung` Specifically, we will model the effect of sex and age on the survival of lung cancer patients in this data set. To estimate this effect, we will use a Cox model.
 
 The Cox model follows the general form of
 
@@ -73,7 +76,7 @@ $$ \ln L(\beta) = \sum d_i \bigg( X_i \beta - \ln \sum_{j:t_j\geq t_i} \theta_j 
 
 where $\theta = \exp(\beta X)$ and $d_i$ is the event indicator for the $i^{th}$ subject. If we plug in our independent variables from above we yield $\theta = \exp(\beta_1 x_1 + \beta_2 x_2)$ for our specific case.
 
-The $\sum_{j:t_j\geq t_i} \theta_j$ part of the formula above makes the computation a little bit more complicated, since it requires a certain order of the observations. We need to sum $\theta_j$ for all observations $j$ that have an event later or at the exact same time as our $i^th$ observation. Basically this the cumulative sum of $\theta_j$ across the event times $t$ in descending order. To calculate this quantity in R we can sort the data set by descending event times and afterwards use the <TT>base::cumsum()</TT> function to calculate the cumulative sum.
+The $\sum_{j:t_j\geq t_i} \theta_j$ part of the formula above makes the computation a little bit more complicated, since it requires a certain order of the observations. We need to sum $\theta_j$ for all observations $j$ that have an event later or at the exact same time as our $i^th$ observation. Basically this the cumulative sum of $\theta_j$ across the event times $t$ in descending order. To calculate this quantity in R we can sort the data set by descending event times and afterwards use the `base::cumsum()` function to calculate the cumulative sum.
 
 Lets put this all together and define our log-likelihood function in R.
 
@@ -106,7 +109,7 @@ negll <- function(par){
 }
 ```
 
-To improve our optimisation we should also pass the gradient functions for our model to the <TT>optimx()</TT> later. The gradient function for the Cox model in general follows
+To improve our optimisation we should also pass the gradient functions for our model to the `optimx()` later. The gradient function for the Cox model in general follows
 
 $$ \ln L'(\beta) = \sum d_i \bigg(X_i - \frac{\sum_{j:t_j\geq t_i} \theta_j X_j}{\sum_{j:t_j\geq t_i} \theta_j} \bigg)$$
 
@@ -116,7 +119,7 @@ $$ \ln L'(\beta_1) = \sum d_i \bigg(x_{1i} - \frac{\sum_{j:t_j\geq t_i} \theta_j
 
 $$ \ln L'(\beta_2) = \sum d_i \bigg(x_{2i} - \frac{\sum_{j:t_j\geq t_i} \theta_j x_{2j}}{\sum_{j:t_j\geq t_i} \theta_j} \bigg)$$
 
-We can use this function to get the following gradient function for our Cox model. Note that we have to use the <TT>base::cumsum()</TT> twice in the code below to calculate the cumulative sum of $\theta_j x_{1j}$ and $\theta_j x_{2j}$.
+We can use this function to get the following gradient function for our Cox model. Note that we have to use the `base::cumsum()` twice in the code below to calculate the cumulative sum of $\theta_j x_{1j}$ and $\theta_j x_{2j}$.
 
 ```{r}
 # 4. Define gradient function for Cox regression model ------------------------
@@ -153,7 +156,7 @@ negll_grad <- function(par){
 }
 ```
 
-Lets just check if our gradient function is correct by comparing it with the approximation of the gradient function calculated with the <TT>numDerive::grad()</TT> function.
+Lets just check if our gradient function is correct by comparing it with the approximation of the gradient function calculated with the `numDerive::grad()` function.
 
 ```{r}
 # 4.1 Compare gradient function with numeric approximation of gradient ========
@@ -166,7 +169,7 @@ all.equal(mygrad, numgrad)
 
 Looks like we get the same numbers and our gradient functions works fine.
 
-Now we pass both our log-likelihood and gradient function on to our <TT>optimx()</TT> call.
+Now we pass both our log-likelihood and gradient function on to our `optimx()` call.
 
 ```{r}
 # 5. Find minimum of log-likelihood function ----------------------------------
@@ -186,9 +189,9 @@ summary(opt, order = "value") %>%
   head(7)
 ```
 
-Six of the optimisation algorithms implemented in the <TT>{optimx}</TT> package yielded equal maximum likelihood values up to four decimals. This suggests neglectable differences between these models. If we would print more decimals of the maximum log-likelihood values we would probably see some slight differences between them. However, all models suggest that females have about half the risk of dying from lung cancer compared to males and the risk of dying increases with increasing age.
+Six of the optimisation algorithms implemented in the `{optimx}` package yielded equal maximum likelihood values up to four decimals. This suggests neglectable differences between these models. If we would print more decimals of the maximum log-likelihood values we would probably see some slight differences between them. However, all models suggest that females have about half the risk of dying from lung cancer compared to males and the risk of dying increases with increasing age.
 
-Let us check which estimates we would get for sex and age if we would fit a Cox model using the <TT>survival::coxph()</TT> function and compare those with our estimates.
+Let us check which estimates we would get for sex and age if we would fit a Cox model using the `survival::coxph()` function and compare those with our estimates.
 
 ```{r}
 # 6. Estimate regression coefficients using coxph  ----------------------------
@@ -218,7 +221,7 @@ lapply(1:nrow(coef_opt), function(i){
   arrange(mean_dif)
 ```
 
-We can see that the mean difference between our estimates and the estimates yielded with the <TT>survival::coxph()</TT> model is neglectable for most of our models. It seems as everything worked well. However, as a good researcher we would of course also like to obtain some estimates of uncertainty. So let us take the model we fitted with the <TT>Rcgmin</TT> algorithm from our <TT>optimx()</TT> output and calculate the standard error for our estimates using the hessian matrix. If you are more interested in the calculation you can take a look at my [previous blog post](/post/optim_logit_reg_se.html).
+We can see that the mean difference between our estimates and the estimates yielded with the `survival::coxph()` model is neglectable for most of our models. It seems as everything worked well. However, as a good researcher we would of course also like to obtain some estimates of uncertainty. So let us take the model we fitted with the `Rcgmin` algorithm from our `optimx()` output and calculate the standard error for our estimates using the hessian matrix. If you are more interested in the calculation you can take a look at my [previous blog post](/post/optim_logit_reg_se.html).
 
 ```{r}
 # 8. Estimate the standard error ----------------------------------------------
@@ -261,4 +264,4 @@ data.frame(Estimate = coef_test,
 
 Great! We obtained our own Cox model with confidence intervals.
 
-To summarise, we specified our log-likelihood function and its gradient function, and optimised it using the <TT>optimx::optimx()</TT> function. Based on the output of the <TT>optimx()</TT> call we were able to obtain the standard error and confidence intervals for our estimates.
+To summarise, we specified our log-likelihood function and its gradient function, and optimised it using the `optimx::optimx()` function. Based on the output of the `optimx()` call we were able to obtain the standard error and confidence intervals for our estimates.
