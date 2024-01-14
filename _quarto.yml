@@ -4,6 +4,8 @@ project:
 website:
   title: "Joshua Entrop"
   favicon: pictures/icon.png
+  site-url: https://www.joshua-entrop.com
+  description: "Joshua Entrop's personal website featuring his R blog"
   page-footer:
     center:
       - text: "<a href='/terms.html'>Terms</a> <br> &#169 Joshua Philipp Entrop 2024"
