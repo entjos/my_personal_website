@@ -20,6 +20,14 @@ website:
         text: Publications
       - href: software.qmd
         text: Software
+    right:
+      - href: index.qmd
+        text: EN
+      - href: index.de.qmd
+        text: DE
+      - href: index.sv.qmd
+        text: SV
+
 
 format:
   html:
@@ -28,5 +36,3 @@ format:
       dark: darkly
     css: styles.css
     toc: true
-
-editor: visual

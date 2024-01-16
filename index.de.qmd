@@ -1,0 +1,47 @@
+---
+title: Joshua Philipp Entrop
+subtitle: Statistiker | Doktorand <br> [@Karolinska Institutet](https://ki.se/en/people/joshua-entrop)
+image: pictures/avatar.jpg
+image-alt: "Ein fröhlicher Joshua in Krakow"
+toc: false
+format: 
+  html:
+    page-layout: full
+about: 
+  template: trestles
+  image-shape: round
+  image-width: 20em
+  links:
+    - icon: linkedin
+      text: LinkedIn
+      href: https://www.linkedin.com/in/joshua-entrop/
+    - icon: github
+      text: GitHub
+      href: https://github.com/entjos
+    - icon: envelope
+      text: Email
+      href: mailto:joshuaentrop@posteo.de
+---
+
+# Über mich
+
+Ich arbeite als Doktorand und Statistiker am [Karolinska Institutet](https://ki.se/en/people/joshua-entrop) in Stockholm in der Forschungsgruppe für [Krebsepidemiologie](https://ki.se/en/meds/research-group-karin-ekstrom-smedby). Meine Forschungsinteressen liegen im Bereich der angewandte Biostatistik und klinische Epidemiologie. Ich interessiere mich für statistische und methodologische Herausforderungen, die mit der Analyse von Register- und Überlebensdaten einhergehen.
+
+------------------------------------------------------------------------
+
+# Interessen
+
+-   Survival Analyse
+-   Kausale Inferenz
+-   Reproduzierbarkeit in der Forschung
+-   Programmieren in R
+
+------------------------------------------------------------------------
+
+# Akademische Ausbildung
+
+**MSc Public Health Epidemiology** (2020)\
+Karolinska Institutet Stockholm, Schweden
+
+**BA Sozialwissenschaft** (2018)\
+Ruhr-Universität Bochum, Deutschland

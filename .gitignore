@@ -9,6 +9,7 @@
 *_cache/
 /env/
 /_site/
+/_freeze/
 
 
 /.luarc.json

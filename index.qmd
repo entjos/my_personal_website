@@ -23,7 +23,7 @@ about:
       href: mailto:joshuaentrop@posteo.de
 ---
 
-# About myself
+# About me
 
 I am a PhD student and statistician working at [Karolinska Institutet](https://ki.se/en/people/joshua-entrop) with a passion for health data and statistical analyses. I am working in the research group on [cancer epidemiology](https://ki.se/en/meds/research-group-karin-ekstrom-smedby) within the department of medicine at Karolinska Institutet. My research interests lie within applied biostatistics and clinical epidemiology. I am interested in statistical and methodological challenges that come along with analysing registry and survival data. Within the research process, the phase of data analysis is the most interesting one for me. I love to apply different statistical models to data, to reveal new insights, which cannot be seen at the first glance.
 
