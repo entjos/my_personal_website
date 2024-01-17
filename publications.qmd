@@ -4,6 +4,15 @@ title-block-banner: true
 toc: false
 ---
 
+## 2024
+
+### Utilisation of Healthcare in Children Born to Lymphoma Survivors in Sweden
+
+**Entrop JP**; Wintzell V; Dietrich CE; Marklund A; Glimelius I; El-Galaly TC; Smedby KE; Eloranta S <br>
+(pre-registered, ongoing research)
+
+[OSF](https://osf.io/sbevn){.btn .btn-outline-primary .btn role="button"}
+
 ## 2023
 
 ### Reproduction patterns among non-Hodgkin lymphoma survivors by subtype in Sweden, Denmark and Norway: A population-based matched cohort study
