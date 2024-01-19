@@ -25,7 +25,7 @@ about:
 
 # Om mig
 
-Jag är en doktorand och statistiker på [Karolinska Institutet](https://ki.se/personer/joshua-entrop) i forskargurppen för [cancerepidemiologi](https://ki.se/meds/forskargrupp-karin-ekstrom-smedby). Mina forskningsintressen ligger inom tillämpad biostatistik och klinisk epidemiologi. Jag är intresserad av statistiska och metodologiska utmaningar som följer med analys av register- och överlevnadsdata. Under forskningsprocessen är fasen av dataanalys den mest intressanta för mig. Jag älskar att tillämpa olika statistiska modeller för att avslöja nya insikter som inte kan ses vid första ögonkastet.
+Som doktorand och statistiker vid [Karolinska Institutet](https://ki.se/personer/joshua-entrop) är jag en del av forskargruppen för [cancerepidemiologi](https://ki.se/meds/forskargrupp-karin-ekstrom-smedby). Mina forskningsintressen fokuserar på tillämpad biostatistik och klinisk epidemiologi. Jag fascineras av de statistiska och metodologiska utmaningarna som uppstår vid analys av register- och överlevnadsdata. Under forskningsprocessen är det speciellt stadiet av dataanalys som fångar mitt intresse mest. Att applicera olika statistiska modeller för att avslöja nya insikter, som kanske inte är uppenbara vid första anblicken, är något jag verkligen älskar.
 
 ------------------------------------------------------------------------
 
