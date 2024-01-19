@@ -25,7 +25,7 @@ about:
 
 # Über mich
 
-Ich arbeite als Doktorand und Statistiker am [Karolinska Institutet](https://ki.se/en/people/joshua-entrop) in Stockholm in der Forschungsgruppe für [Krebsepidemiologie](https://ki.se/en/meds/research-group-karin-ekstrom-smedby). Meine Forschungsinteressen liegen im Bereich der angewandte Biostatistik und klinische Epidemiologie. Ich interessiere mich für statistische und methodologische Herausforderungen, die mit der Analyse von Register- und Überlebensdaten einhergehen.
+Ich arbeite als Doktorand und Statistiker am [Karolinska Institutet](https://ki.se/en/people/joshua-entrop) in Stockholm in der Forschungsgruppe für [Krebsepidemiologie](https://ki.se/en/meds/research-group-karin-ekstrom-smedby). Meine Forschungsinteressen konzentrieren sich auf die angewandte Biostatistik und klinische Epidemiologie. Im Forschungsprozess interresieren mich insbesondere statistische und methodologische Herausforderungen die im Zusammenhang mit der Analyse von Register- und Überlebensdaten aufkommen.
 
 ------------------------------------------------------------------------
 
