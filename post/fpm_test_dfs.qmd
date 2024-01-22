@@ -1,6 +1,6 @@
 ---
 title: "Testing degrees of freedom for generalised survival models in R"
-description: "Have you ever encountered a situation in which you wanted to test different degrees of freedom (DF) for a generalised survival model? This blog post introduces a R function that helps use finding the best fitting spline functions for you generalised survival model."
+description: "Have you ever encountered a situation in which you wanted to test different degrees of freedom (DF) for a generalised survival model? This blog post introduces an R function that helps use finding the best fitting spline functions for you generalised survival model."
 author: "Joshua Philipp Entrop"
 date: "2024-01-10"
 categories: [R, survival analysis]
@@ -59,7 +59,7 @@ legend("topleft",
 
 [R Code](/rcode/fpm_test_dfs.txt){.btn .btn-outline-primary .btn role="button"}
 
-Have you ever encountered a situation in which you wanted to test different degrees of freedom (DF) for a generalised survival model? I encounter this situation quite frequently and after writing for loops for looping through the different combinations of DFs for different spline functions, I decided to write a R function that does this for me instead.
+Have you ever encountered a situation in which you wanted to test different degrees of freedom (DF) for a generalised survival model? I encounter this situation quite often and after writing for loops for looping through the different combinations of DFs for different spline functions, I decided to write a R function that does this for me instead.
 
 In today's blog post I would like to introduce you to `fpm_test_dfs()`, which does exactly that. The function can be used to test combinations of DFs for different spline functions in a generalised survival model fitted with `rstpm2::stpm()`. However, before discussing about the function, I would like to quickly introduce the generalised survival model modeled on the log cumulative hazard function ($\ln H(t)$). In these models the baseline hazard function is modeled using a spline function of log time with a vector of knots $\mathbf{k}_0$ and parameters $\gamma$:
 
@@ -123,7 +123,7 @@ We now got a dataframe with one row for each DF. However, what we are interested
 fpm_get_best_fit(dfs_test_model1)
 ```
 
-We now see that based on the AIC we would chose 4 DFs as the best fitting model and based on teh BIC we would chose 2 DFs for the baseline hazard function as the best fitting model. Now you might think "why would I need a function that does this for me when I can just write a simple for-loop". I agree with you in principel, but adding more time-depending co variate effects to the model increases the complexity quite quickly. Let's assume we would like to add the following two variables to our model and add time-varying effects for those:
+We now see that based on the AIC we would chose 4 DFs as the best fitting model and based on the BIC we would chose 2 DFs for the baseline hazard function as the best fitting model. Now you might think "Why would I need a function that does this for me when I can just write a simple for-loop". I agree with you in principle, but adding more time-depending co variate effects to the model increases the complexity quite quickly. Let's assume we would like to add the following two variables to our model and add time-varying effects for those:
 
 -   `x1`: Age at diagnosis in years,
 -   `hormon`: Indicator for receiving hormonal therapy.
@@ -153,7 +153,7 @@ We now receive a dataset with 16 rows, one row for each model that we tested as 
 fpm_get_best_fit(dfs_test_model2)
 ```
 
-Checking the best fitting model suggest that one DF is sufficient for modelling the time-varying effect of both hormonal therapy and age. However, one DF is equivalent to not using any knots for the spline function (see above). Hence, using one DF for the time-varying effect is equivalent to only using a linear interaction between log time and hormonal therapy, and age at diagnosis, respectively.
+Checking the best fitting model suggests that one DF is sufficient for modelling the time-varying effect of both hormonal therapy and age. However, one DF is equivalent to not using any knots for the spline function (see above). Hence, using one DF for the time-varying effect is equivalent to only using a linear interaction between log time and hormonal therapy, and age at diagnosis, respectively.
 
 Another thing that we might want to do is to fit separate models for those that received hormonal therapy and those that did not, aka, stratifying by hormonal therapy. In this situation we need to test two separate models. We can easily do this by using the `by_vars` option in `fpm_test_dfs()`. Let's assume that we stick with only one DF for the time-varying effect of age, but we would like to test for different DFs for the baseline hazard function in our two models.
 

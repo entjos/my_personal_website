@@ -3,8 +3,8 @@ project:
 
 website:
   title: "Joshua Entrop"
-  image: https://www.joshua-entrop.com/pictures/icon.png
-  favicon: pictures/icon.png
+  image: /pictures/icon.png
+  favicon: /pictures/icon.png
   site-url: https://www.joshua-entrop.com
   description: "Joshua Entrop's personal website featuring his R blog"
   open-graph:
