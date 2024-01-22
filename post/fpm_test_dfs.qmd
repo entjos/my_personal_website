@@ -6,7 +6,11 @@ date: "2024-01-10"
 categories: [R, survival analysis]
 ---
 
-```{r, message=FALSE, warning=FALSE, echo=FALSE}
+```{r}
+#| echo: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| classes: preview-image
 # This script is internal and only used to create a picture accompanying the post
 
 # Loading packages

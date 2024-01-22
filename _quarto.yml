@@ -3,9 +3,13 @@ project:
 
 website:
   title: "Joshua Entrop"
+  image: https://www.joshua-entrop.com/pictures/icon.png
   favicon: pictures/icon.png
   site-url: https://www.joshua-entrop.com
   description: "Joshua Entrop's personal website featuring his R blog"
+  open-graph:
+    locale: en_EN
+    site-name: Quarto
   page-footer:
     center:
       - text: "<a href='/terms.html'>Terms</a> <br> &#169 Joshua Philipp Entrop 2024"
