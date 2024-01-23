@@ -9,14 +9,15 @@ toc: false
 
 You can also find a blog post that showcases the use of ExclusionTabe [here](/post/exclusion_table.qmd).
 
-[CRAN](https://cran.r-project.org/web/packages/ExclusionTable/index.html){.btn .btn-outline-primary .btn role="button"} [GitHub](https://github.com/entjos/ExclusionTable/){.btn .btn-outline-primary .btn role="button"}
+[CRAN](https://cran.r-project.org/web/packages/ExclusionTable/index.html){.btn .btn-outline-primary .btn role="button"} [GitHub](https://github.com/entjos/ExclusionTable/){.btn .btn-outline-primary .btn role="button"} [Pkgdown](https://entjos.github.io/ExclusionTable/){.btn .btn-outline-primary .btn role="button"}
 
 ## TreeMineR
 This package is an implementation of tree-based scan statistics, that I developed for one of my PhD studies. The function can be used to identify event clusters along a hierarchical tree. One use case could for instance be in pharmacovigilance for identifying clusters of adverse events along side the ICD tree. If you interested in how we use the TreeMineR package in our research, you can find our pre-registered analysis plan [here](https://osf.io/sbevn).
 
 [GitHub](https://github.com/entjos/TreeMineR/){.btn .btn-outline-primary .btn role="button"}
+[Pkgdown](https://entjos.github.io/TreeMineR/){.btn .btn-outline-primary .btn role="button"}
 
 ## entjosR
 `entjosR` is a package which I use for storing some miscellaneous R functions that I often use in my daily work. The package includes some function that make it easier to create descriptive and result tables by combining R and Excel. Another function in the package that I use quite a bit is `fpm_test_dfs()`, which helps you to specify the degrees of freedome for a flexible parametric survival model. If you're interested, you can also take a look at my blog article [*Testing degrees of freedom for generalised survival models in R*](/post/fpm_test_dfs.qmd), which demonstrates the use of the function.
 
-[GitHub](https://github.com/entjos/entjosR/){.btn .btn-outline-primary .btn role="button"}
+[GitHub](https://github.com/entjos/entjosR/){.btn .btn-outline-primary .btn role="button"} [Pkgdown](https://entjos.github.io/entjosR/){.btn .btn-outline-primary .btn role="button"}
