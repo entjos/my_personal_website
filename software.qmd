@@ -4,6 +4,11 @@ title-block-banner: true
 toc: false
 ---
 
+## JointFPM
+Recurrent events are common in medical research including, e.g., heart attacks, stroke or cancer relapses. One useful summary measure for this situations is the mean number of events at different time points. However, at the same time analyses is often complicated by competing events, i.e., events that prevent the event of interest from occurring. This is where the `JointFPM` packages comes in handy. The `JointFPM` packages implements a parametric model for estimating the mean number of events in the presence of competing risks. The package includes a function for fitting a joint model for the recurrent and competing event and a predict function that allows for predicting conditional as well as marginal estimates of the mean number of events and transformations there of.
+
+[CRAN](https://cran.r-project.org/web/packages/JointFPM/index.html){.btn .btn-outline-primary .btn role="button"} [GitHub](https://github.com/entjos/JointFPM/){.btn .btn-outline-primary .btn role="button"} [Pkgdown](https://entjos.github.io/JointFPM/){.btn .btn-outline-primary .btn role="button"}
+
 ## ExclusionTable
 `ExclusionTable` is a package for you who works with epidemiological research or other studies in which you need to apply certain inclusion and exclusion criteria to your study population. Instead of counting observations before and after a `subset()` call, the `ExclusionTable()` function reports the number before and after each `subset()` call together with the number of observations that have been excluded. This is especially useful in observational studies for keeping track how many observations have been excluded for each in-/ or exclusion criteria. You just need to provide `ExclusionTable()` with a dataset and a list of logical filter statements.
 
@@ -18,6 +23,6 @@ This package is an implementation of tree-based scan statistics, that I develope
 [Pkgdown](https://entjos.github.io/TreeMineR/){.btn .btn-outline-primary .btn role="button"}
 
 ## entjosR
-`entjosR` is a package which I use for storing some miscellaneous R functions that I often use in my daily work. The package includes some function that make it easier to create descriptive and result tables by combining R and Excel. Another function in the package that I use quite a bit is `fpm_test_dfs()`, which helps you to specify the degrees of freedome for a flexible parametric survival model. If you're interested, you can also take a look at my blog article [*Testing degrees of freedom for generalised survival models in R*](/post/fpm_test_dfs.qmd), which demonstrates the use of the function.
+`entjosR` is a package which I use for storing some miscellaneous R functions that I often use in my daily work. The package includes some function that make it easier to create descriptive and result tables by combining R and Excel. Another function in the package that I use quite a bit is `fpm_test_dfs()`, which helps you to specify the degrees of freedom for a flexible parametric survival model. If you're interested, you can also take a look at my blog article [*Testing degrees of freedom for generalised survival models in R*](/post/fpm_test_dfs.qmd), which demonstrates the use of the function.
 
 [GitHub](https://github.com/entjos/entjosR/){.btn .btn-outline-primary .btn role="button"} [Pkgdown](https://entjos.github.io/entjosR/){.btn .btn-outline-primary .btn role="button"}
