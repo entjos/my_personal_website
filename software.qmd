@@ -1,5 +1,6 @@
 ---
 title: "Software"
+description: "In my day-to-day work, I'm always looking out for things that can be improved. At work, 'these things' often mean code that I use for analysis. I really enjoy developing new R-packages that make life easier for other people and that implement new features that haven't been easily available before. This website lists R-packages that I developed during my work but also in spare time. Don't hesitate to send me an email if you happen to use one of them and want to share your thoughts."
 title-block-banner: true
 toc: false
 ---
