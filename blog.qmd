@@ -1,5 +1,6 @@
 ---
 title: "Blog"
+description: "I’m always curious to learn new things, and this blog includes some posts about topics that I wanted to learn and share with others. Besides this, I sometimes write posts about packages that I worked on or code snippets that came in handy for me. Also, if you have a comment on a blog post or a question, please let me know."
 listing:
   contents: post
   sort: "date desc"
