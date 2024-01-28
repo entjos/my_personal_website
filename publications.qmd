@@ -1,5 +1,6 @@
 ---
 title: "Publications"
+description: "Being active in research, publishing, and sharing research results through peer-reviewed articles in scientific journals is an essential part of day-to-day work. This site includes a list of publications from research projects that I've been involved in."
 title-block-banner: true
 toc: false
 ---
