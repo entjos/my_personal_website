@@ -1,0 +1,35 @@
+\documentclass[tikz]{standalone}
+\usepackage{verbatim}
+\usepackage{tikz}
+
+\usetikzlibrary{plotmarks}
+\usetikzlibrary{snakes}
+\usetikzlibrary{arrows,positioning} 
+
+\begin{document}
+	\tikzset{
+		>=stealth',
+		punkt/.style={
+			rectangle,
+			rounded corners,
+			draw=black, very thick,
+			text width=6.5em,
+			minimum height=2em,
+			text centered},
+		pil/.style={
+			->,
+			thick,
+			shorten <=2pt,
+			shorten >=2pt,},
+		axis/.style={thick, ->, >=stealth'},
+		important line/.style={thick}
+	}
+
+\begin{tikzpicture}
+\path (0, 0)  node (x)  {X}
+		 (3, 0)  node (y)  {Y};
+	  
+\draw[->, thick] (x) -- (y);
+\end{tikzpicture}
+
+\end{document}
