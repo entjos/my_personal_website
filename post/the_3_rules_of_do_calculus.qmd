@@ -48,7 +48,7 @@ $$
 
 where $Z(W)$ is the set of $Z$-nodes that are not ancestors of any $W$-node in $G_\overline{X}$.
 
-Last but not least rule 3 is probably the most complicated one. In words rule 3 tells us that we can remove an expression, e.g., $\do(y)$ from our expression if $Y$ and $Z$ are independent, given $X$ and potentially other variables $Z$, in the graph were we remove all arrow going out of $X$ and all nodes of $Z$ that are not ancestors of $W$.
+Last but not least, rule 3 is probably the most complicated one. In words rule 3 tells us that we can remove an expression, e.g., $\do(y)$ from our expression if $Y$ and $Z$ are independent, given $X$ and potentially other variables $Z$, in the graph were we remove all arrow going out of $X$ and all nodes of $Z$ that are not ancestors of $W$.
 
 Let's use these rules of *do*-calculus for identifying causal effects in some example graphs.
 
@@ -76,11 +76,11 @@ Success! Using *do*-calculus we could replace all the *do*-statements with obser
 @fig-dag-b includes a classical example of confounding, in which the variable $Z$ confounds the effect of $X$ on $Y$. If we remove all arrows going out of $X$, we find that $X$ is still associated with $Y$ through the fork $X \leftarrow Z \rightarrow Y$. Hence, we cannot directly disentangle the direct effect of $X$ on $Y$ and the association between $X$ and $Y$ that is due to the confounding of $Z$. However, as stated in rule 2 we can also condition on other variables to render $X$ and $Y$ independent in $G_\underline{X}$.
 
 $$
-\begin{split}
-P(y|\do(x)) & = \sum_z P(y|\do(x), z) P(z|\do(x)) & \\
-& = \sum_z P(y|\do(x), z) P(z|x) \\
-& = \sum_z P(y|x, z) P(z|x) \\
-\end{split}
+\begin{align}
+P(y|\do(x)) & = \sum_z P(y|\do(x), z) P(z|\do(x)) \\
+& = \sum_z P(y|\do(x), z) P(z|x) && \text{Rule 2: } Z \ind X \text{ in } G_{\overline{X}} \\
+& = \sum_z P(y|x, z) P(z|x) && \text{Rule 2: } Y \ind X|Z \text{ in } G_{\overline{X}} \\
+\end{align}
 $$
 
 Ok, let's go through this in more detail. The first step we need to do is to condition our analysis on the variable $Z$. This renders $X$ and $Y$ independent in $G_\underline{X}$. Secondly, we replace $P(z|\do(x))$ with $P(z|x)$ as $X$ and $Z$ are independent in $G_\underline{X}$. Lastly, we can now replace $P(y|\do(x), z)$ with $P(y|x, z)$ as $X$ and $Y$ are independent when conditioning on $Z$.
