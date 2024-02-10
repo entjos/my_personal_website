@@ -2,17 +2,19 @@
 title: "The 3 rules of do-calculus"
 description: "Pearl's *do*-calculus offers a comprehensive set of rules for identifying causal effects from a causal directed acyclic graph (DAG). Using those rules one can identify causal effects even in situations in which the commonly applied back-door criteria does not apply. In this blog post, I demonstrate how one can use Pearl's *do*-calculs to identify causal effects based on various example DAGs."
 author: "Joshua Philipp Entrop"
-date: "2024-01-10"
+image: ../pictures/3_rules_of_do_calculus_dag_2.png
+date: "2024-02-10"
 categories: [causal inference]
 crossrefs-hover: false
-draft: true
+hyperrefoptions: draft
+draft: false
 ---
 
 \usepackage{subcaption}
 \newcommand{\ind}{\perp\!\!\!\!\perp} 
 \newcommand{\do}{\text{do}}
 
-Before we can dive into Pearl's *do*-calculus and look at some examples, we first need to introduce a bit of specific notation. First, let $G$ be a directed acyclic graph which is associated with a causal model, let $G_\overline{X}$ be a submodel of $G$ in which we remove all arrows going into $X$, and let $G_\underline{X}$ be a submodel of $G$ in which we remove all arrows going out of $X$. Secondly, let $\do(x)$ define an operator for intervening on $x$. Thus, $P(y|\do(x))$ indicates the value of $y$ if we would change the value of $x$. Lastly, let $X \ind Y$ denote that $X$ and $Y$ are independent of each other.
+Before we can dive into Pearl's *do*-calculus and look at some examples, we first need to introduce a bit of specific notation. First, let $G$ be a directed acyclic graph which is associated with a causal model, let $G_\overline{X}$ be a submodel of $G$ in which we remove all arrows going into $X$, and let $G_\underline{X}$ be a submodel of $G$ in which we remove all arrows going out of $X$. Secondly, let $\do(x)$ define an operator for intervening on $x$. Hence, $P(y|\do(x'))$ indicates the value of $y$ if we would change the value of $x$ to the value $x'$. Lastly, let $X \ind Y$ denote that $X$ and $Y$ are independent of each other.
 
 Pearl defines in his book *Causality* the three rules of *do*-calculus which can be used to identify causal effects with the help of directed acyclic graphs (DAGs):
 
@@ -31,7 +33,7 @@ $$
 P(y|\do(x), \do(z), w) = P(y|\do(x), w) \text{ if } Y \ind Z|X, W \text{ in } G_{\overline{X}, \overline{Z(W)}}
 $$
 
-where $Z(W)$ is the set if $Z$-nodes that are not ancestors of any $W$-node in $G_\overline{X}$.
+where $Z(W)$ is the set of $Z$-nodes that are not ancestors of any $W$-node in $G_\overline{X}$.
 
 Please note that rule 2 can be simplified in case we are only looking at one action. In that case we can write:
 
@@ -54,7 +56,7 @@ Let's use these rules of *do*-calculus for identifying causal effects in some ex
 Some example DAGs that we will use throughout the blog post.
 :::
 
-The first example in graph a) might seem trivial, but I thought it might be a smooth start. In this graph there are no arrows connecting $X$ and $Y$ in $G_\underline{X}$, that is if we remove all the arrows going out of $X$. Hence, $X$ and $Y$ are independent in $G_\underline{X}$, which means that we can apply rule 2 of *do*-calculus:
+The first example in @fig-dag-a might seem trivial, but I thought it might be a smooth start. In this graph there are no arrows connecting $X$ and $Y$ in $G_\underline{X}$, that is if we remove all the arrows going out of $X$. Hence, $X$ and $Y$ are independent in $G_\underline{X}$, which means that we can apply rule 2 of *do*-calculus:
 
 $$
 P(y|\do(x)) = P(y|x)
@@ -62,7 +64,7 @@ $$
 
 Using *do*-calculus we could replace all the *do*-statements with observed variables, which now allows us to estimate the causal effect of changing $X$ on $Y$ based on our observed data. This was quite an easy example. But before we continue with the next example, let's take a closer look at $G_\underline{X}$ again. The reason why we are interested in looking at the graph in which we remove all errors going out form $X$ is that we want to make sure that $X$ is only affecting $Y$ directly or through causes that are caused by $X$, i.e., we are interested in the total effect of $X$ on $Y$. Thus, if we remove all arrows going out $X$ or going into $Y$ and we find that in this submodel there is no open causal path between $X$ and $Y$, we can assure us that in the whole model $G$ all causal paths between $X$ and $Y$ must be direct paths, i.e., paths that we want to include in our estimation.
 
-Graph b) includes a classical example of confounding, in which the variable $Z$ confounds the effect of $X$ on $Y$. If we remove all arrows going out of $X$, we find that $X$ is still associated with $Y$ through the fork $X \leftarrow Z \rightarrow Y$. Hence, we cannot directly disentangle the direct effect of $X$ on $Y$ and the association between $X$ and $Y$ that is due to the confounding of $Z$. However, as stated in rule 2 we can also condition on other variables to render $X$ and $Y$ independent in $G_\underline{X}$.
+@fig-dag-b includes a classical example of confounding, in which the variable $Z$ confounds the effect of $X$ on $Y$. If we remove all arrows going out of $X$, we find that $X$ is still associated with $Y$ through the fork $X \leftarrow Z \rightarrow Y$. Hence, we cannot directly disentangle the direct effect of $X$ on $Y$ and the association between $X$ and $Y$ that is due to the confounding of $Z$. However, as stated in rule 2 we can also condition on other variables to render $X$ and $Y$ independent in $G_\underline{X}$.
 
 $$
 \begin{split}
@@ -74,9 +76,9 @@ $$
 
 Ok, let's go through this in more detail. The first step we need to do is to condition our analysis on the variable $Z$. This renders $X$ and $Y$ independent in $G_\underline{X}$. Secondly, we replace $P(z|\do(x))$ with $P(z|x)$ as $X$ and $Z$ are independent in $G_\underline{X}$. Lastly, we can now replace $P(y|\do(x), z)$ with $P(y|x, z)$ as $X$ and $Y$ are independent when conditioning on $Z$.
 
-Graph c) again is a more simple example. In this graph $X$ and $Y$ are independent in $G_\underline{X}$ because $Z$ is a collider on the path $X \rightarrow Z \leftarrow Y$. Hence, we can just calculate $P(y|\do(x))$ based on our observed data $P(y|x)$.
+@fig-dag-c again is a more simple example. In this graph $X$ and $Y$ are independent in $G_\underline{X}$ because $Z$ is a collider on the path $X \rightarrow Z \leftarrow Y$. Hence, we can just calculate $P(y|\do(x))$ based on our observed data $P(y|x)$.
 
-Graph d) is a tricky one and in contrast to the graphs before, we cannot only rely on rule 2 in order to identify the causal effect of $X$ on $Y$. Using only the back-door criteria would not allow us to identify the causal effect of $X$ on $Y$ in this graph, but using *do*-calculus we actually can identify this effect. For this, let's first take a look at the effect that we would like to estimate:
+@fig-dag-d is a tricky one and in contrast to the graphs before, we cannot only rely on rule 2 in order to identify the causal effect of $X$ on $Y$. Using only the back-door criteria would not allow us to identify the causal effect of $X$ on $Y$ in this graph, but using *do*-calculus we actually can identify this effect. For this, let's first take a look at the effect that we would like to estimate:
 
 $$
 P(y|\do(x)) = \sum_z P(y|\do(x), z) P(z|x)
@@ -106,6 +108,6 @@ $$
 P(y|\do(x)) = \sum_z P(z|x) \sum_{x'} P(y| x', z) P(x')
 $${#eq-dag-d-4}
 
-Please not that we used $x'$ in @Eq-dag-d-4 in order to differentiate between the $x$ in $\do(x)$ and the $x$ observed in our dataset. The second part of @Eq-dag-d-4 means a summation over all observed values of $X$ independetly of the value that is chosen for $\do(x)$.
+Please not that we used $x'$ in @Eq-dag-d-4 in order to differentiate between the $x$ in $\do(x)$ and the $x$ observed in our dataset. The second part of @Eq-dag-d-4 means a summation over all observed values of $X$ independently of the value that is chosen for $\do(x)$.
 
-[#here](../pictures/3_rules_of_do_calculus_dag_2.png)
+By the way, if you don't want to buy Pearl's causality book, but your still interested in reading more about *do*-calculus you can find a short introduction to *do*-calculus by Pearl [here](https://arxiv.org/ftp/arxiv/papers/1210/1210.4852.pdf). This paper also links to some other interesting applications of *do*-calculus including e.g. [selection bias](https://ftp.cs.ucla.edu/pub/stat_ser/r381.pdf) and [transportability](https://ftp.cs.ucla.edu/pub/stat_ser/r372-a.pdf) analysis.
