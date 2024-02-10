@@ -14,6 +14,8 @@ draft: false
 \newcommand{\ind}{\perp\!\!\!\!\perp} 
 \newcommand{\do}{\text{do}}
 
+Heads up; its more fun to read this blog post if you have seen DAGs before, as this blog post won't provide an introduction to DAGs.
+
 Before we can dive into Pearl's *do*-calculus and look at some examples, we first need to introduce a bit of specific notation. First, let $W$, $X$, $Y$, and $Z$ be a set of unique variables. Second, let $G$ be a directed acyclic graph which is associated with a causal model, let $G_\overline{X}$ be a submodel of $G$ in which we remove all arrows going into $X$, and let $G_\underline{X}$ be a submodel of $G$ in which we remove all arrows going out of $X$. Third, let $\do(x)$ define an operator for intervening on $x$. For example, $P(y|\do(x'))$ indicates the value of $y$ if we would change the value of $x$ to the value $x'$. Lastly, let $X \ind Y$ denote that $X$ and $Y$ are independent of each other.
 
 In his book *Causality*, Pearl defines the three rules of *do*-calculus which can be used to identify causal effects with the help of directed acyclic graphs (DAGs). The overall aim of *do*-calculus is to translate expression including *do*-statements to expression only including observed data. This then allows us to identify and later estimate a causal effect using our observed data. Put in other word, using *do*-calculus, we can translate a causal expression into an expression only including associations which we then can estimate from our observed data. This allows us to interpret association as causation if certain assumptions are fulfilled. Something that previously was only allowed the devil of epidemiological research.
