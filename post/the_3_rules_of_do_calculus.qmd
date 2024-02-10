@@ -78,8 +78,8 @@ Success! Using *do*-calculus we could replace all the *do*-statements with obser
 $$
 \begin{align}
 P(y|\do(x)) & = \sum_z P(y|\do(x), z) P(z|\do(x)) \\
-& = \sum_z P(y|\do(x), z) P(z|x) && \text{Rule 2: } Z \ind X \text{ in } G_{\overline{X}} \\
-& = \sum_z P(y|x, z) P(z|x) && \text{Rule 2: } Y \ind X|Z \text{ in } G_{\overline{X}} \\
+& = \sum_z P(y|\do(x), z) P(z|x) && \text{Rule 2: } Z \ind X \text{ in } G_{\underline{X}} \\
+& = \sum_z P(y|x, z) P(z|x) && \text{Rule 2: } Y \ind X|Z \text{ in } G_{\underline{X}} \\
 \end{align}
 $$
 
