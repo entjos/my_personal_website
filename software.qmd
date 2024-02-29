@@ -41,6 +41,7 @@ This package is an implementation of tree-based scan statistics, that I develope
 ## entjosR
 [![R-CMD-check](https://github.com/entjos/entjosR/workflows/R-CMD-check/badge.svg)](https://github.com/entjos/entjosR/actions)
 [![CRAN status](https://www.r-pkg.org/badges/version/entjosR)](https://CRAN.R-project.org/package=entjosR)
+[![Codecov test coverage](https://codecov.io/gh/entjos/entjosR/branch/main/graph/badge.svg)](https://app.codecov.io/gh/entjosR/JointFPM?branch=main)
 
 `entjosR` is a package which I use for storing some miscellaneous R functions that I often use in my daily work. The package includes some function that make it easier to create descriptive and result tables by combining R and Excel. Another function in the package that I use quite a bit is `fpm_test_dfs()`, which helps you to specify the degrees of freedom for a flexible parametric survival model. If you're interested, you can also take a look at my blog article [*Testing degrees of freedom for generalised survival models in R*](/post/fpm_test_dfs.qmd), which demonstrates the use of the function.
 
