@@ -1,0 +1,10 @@
+---
+title: Curriculum Vitae
+description: "This page containes a .pdf version of my CV. Since you already made it to this page, just drop me an email if you would like to get in touch with me."
+title-block-banner: true
+toc: false
+---
+
+```{=html}
+<iframe width="780" height="1000" src="cv_short.pdf" title="Quarto Documentation"></iframe>
+```
