@@ -10,7 +10,7 @@ toc: false
 ```{=html}
 <div>
    <div class="smallScreen">
-      Oops! Your sceen is too small for displaying the pdf version of the CV. You can download it instead  <a href="cv_short.pdf">here</a>.
+      Oops! Your sceen is too small for displaying the pdf version of the CV. You can download it <a href="cv_short.pdf">here</a> instead.
    </div>
    
    <div class="largeScreen">
