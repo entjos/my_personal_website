@@ -5,6 +5,19 @@ title-block-banner: true
 toc: false
 ---
 
+
+
 ```{=html}
-<iframe width="780" height="1000" src="cv_short.pdf" title="Quarto Documentation"></iframe>
+<div>
+   <div class="smallScreen">
+      Oops! Your sceen is too small for displaying the pdf version of the CV. You can download it instead  <a href="cv_short.pdf">here</a>.
+   </div>
+   
+   <div class="largeScreen">
+       <object data='cv_short.pdf' frameborder="0" width="100%" height="1000px" style="padding: 20px;">
+          <p>Oops! Your browser doesn't support PDFs!</p>
+          <p><a href="cv_short.pdf">Download Instead</a></p>
+        </object>
+  </div>
+</div>
 ```

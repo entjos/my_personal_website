@@ -2,3 +2,13 @@
 .footer {
   align-items: center
 }
+
+/* On smaller resolutions, hide the text for Large screens */
+@media only screen and (max-width: 800px) {
+    .largeScreen {display: none;}
+}
+
+/* On larger resolutions, hide the text for Small screens */
+@media only screen and (min-width: 800px) {
+   .smallScreen {display: none;}
+}
