@@ -16,9 +16,11 @@ draft: false
 
 Heads up; its more fun to read this blog post if you have seen directed acyclic graphs (DAGs) before, as this blog post won't provide an introduction to DAGs.
 
+When I started to read up on causal inference during the beginning of my PhD studies, I often got stuck on the assumption of exchanability, i.e., Rubin's ignorability assumption: $Y^x \ind X | Z$. I understood what the assumption means in theory and I understood how to use DAGs to identify confounders and colliders. Intuitively, I understood how the ignorability assumption and DAGs are connected, but I did not understand how they are theoretically connected. I mean, there are usually no counterfactuals in a DAG so how can one use DAGs to reason about whether counterfactuals are independent of the treatment assignment $X$. One solution is to use singe world interventions graphs (SWIGs), but they never felt really natural to me. Pearl's *do*-calculus instead offers a very nice combination of DAGs and the ignorability in my opinion. Hence, I think it is worth taking a closer look at the rules of *do*-calculus and how they combine the irgnorability assumption and DAGs.
+
 Before we can dive into Pearl's *do*-calculus and look at some examples, we first need to introduce a bit of specific notation. First, let $W$, $X$, $Y$, and $Z$ be a set of unique variables. Second, let $G$ be a directed acyclic graph which is associated with a causal model, let $G_\overline{X}$ be a submodel of $G$ in which we remove all arrows going into $X$, and let $G_\underline{X}$ be a submodel of $G$ in which we remove all arrows going out of $X$. Third, let $\do(x)$ define an operator for intervening on $x$. For example, $P(y|\do(x'))$ indicates the value of $y$ if we would change the value of $x$ to the value $x'$. Lastly, let $X \ind Y$ denote that $X$ and $Y$ are independent of each other.
 
-In his book *Causality*, Pearl defines the three rules of *do*-calculus which can be used to identify causal effects with the help of DAGs. The overall aim of *do*-calculus is to translate expression including *do*-statements to expression only including observed data. This then allows us to identify and later estimate a causal effect using our observed data. Put in other word, using *do*-calculus, we can translate a causal expression into an expression only including associations which we then can estimate from our observed data. This allows us to interpret association as causation if certain assumptions are fulfilled. Something that previously was only allowed the devil of epidemiological research.
+In his book *Causality*, Pearl defines the three rules of *do*-calculus which can be used to identify causal effects with the help of DAGs. The overall aim of *do*-calculus is to translate expression including *do*-statements to expression only including observed data. This allows us to identify and later estimate a causal effect using our observed data. Put in other word, using *do*-calculus, we can translate a causal expression into an expression only including associations which we then can estimate from our observed data. This allows us to interpret association as causation if certain assumptions are fulfilled. Something that previously was only allowed the devil of epidemiological research.
 
 Now you're ready for the three rules. Listing carefully.
 
@@ -27,19 +29,19 @@ $$
 P(y|\text{do}(x), z, w) = P(y|\text{do}(x), w) \text{ if } Y \perp\!\!\!\!\perp Z|X,W \text{ in } G_{\overline{X}}
 $$
 
-In words, this formula tells us that we can remove a variable $z$ from our expression if $z$ is independent of $y$, given $x$ and potentially other variables $w$, in the DAG in which we remove all arrows going into $x$.
+In words, this tells us that we can remove a variable $z$ from our expression if $z$ is independent of $y$, given $x$ and potentially other variables $w$, in the DAG in which we remove all arrows going into $x$.
 
 **Rule 2** (Action/observation exchange) 
 $$
 P(y|\text{do}(x), \text{do}(z), w) = P(y|\text{do}(x), z, w) \text{ if } Y \perp\!\!\!\!\perp Z|X,W \text{ in } G_{\overline{X}, \underline{Z}}
 $$ 
 
-In word, this tells us that we can replace the action $do(z)$ with the $z$ observed in the data if $y$ and $z$ are independent, given $x$ and potentially other variables $w$, in the DAG in which we remove the arrow going into $x$ and out of $z$. Note that this rule is a generalisation of the back-door criteria which you might now from before. If we are only interested in one action, e.g., $\do(x)$ we can simplify rule 2 as follow:
+In word, this tells us that we can replace the action $do(z)$ with the variable $z$ observed in the data if $y$ and $z$ are independent, given $x$ and potentially other variables $w$, in the DAG in which we remove the arrow going into $x$ and out of $z$. Note that this rule is a generalisation of the back-door criteria which you might now from before. If we are only interested in one action, e.g., $\do(x)$ we can simplify rule 2 as follow:
 
 $$
 P(y|\text{do}(x), w) = P(y|x, w) \text{ if } Y \perp\!\!\!\!\perp X|W \text{ in } G_{\underline{X}}
 $$
-This now is pretty much an expression for the commonly known back-door criteria.
+This now is pretty much an expression of the commonly known back-door criteria.
 
 **Rule 3** (insertion/deletion of actions)
 $$
