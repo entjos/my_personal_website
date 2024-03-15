@@ -17,7 +17,7 @@ about:
       href: https://www.linkedin.com/in/joshua-entrop/
     - icon: book
       text: CV
-      href: /cv/index.html
+      href: /cv/CV_short.pdf
     - icon: github
       text: GitHub
       href: https://github.com/entjos
