@@ -14,7 +14,9 @@ default-image-extension: ""
 
 Recurrent events are common in medical research including, e.g., heart attacks, stroke or cancer relapses. One useful summary measure for this situations is the mean number of events at different time points. However, at the same time analyses is often complicated by competing events, i.e., events that prevent the event of interest from occurring. This is where the `JointFPM` packages comes in handy. The `JointFPM` packages implements a parametric model for estimating the mean number of events in the presence of competing risks. The package includes a function for fitting a joint model for the recurrent and competing event and a predict function that allows for predicting conditional as well as marginal estimates of the mean number of events and transformations there of.
 
-[CRAN](https://cran.r-project.org/web/packages/JointFPM/index.html){.btn .btn-outline-primary .btn role="button"} [GitHub](https://github.com/entjos/JointFPM/){.btn .btn-outline-primary .btn role="button"} [Pkgdown](https://entjos.github.io/JointFPM/){.btn .btn-outline-primary .btn role="button"}
+[CRAN](https://cran.r-project.org/package=JointFPM){.btn .btn-outline-primary .btn role="button"} 
+[GitHub](https://github.com/entjos/JointFPM/){.btn .btn-outline-primary .btn role="button"} 
+[Pkgdown](https://entjos.github.io/JointFPM/){.btn .btn-outline-primary .btn role="button"}
 
 ## ExclusionTable
 [![R-CMD-check](https://github.com/entjos/ExclusionTable/workflows/R-CMD-check/badge.svg)](https://github.com/entjos/ExclusionTable/actions)
@@ -25,7 +27,8 @@ Recurrent events are common in medical research including, e.g., heart attacks, 
 
 You can also find a blog post that showcases the use of ExclusionTabe [here](/post/exclusion_table.qmd).
 
-[CRAN](https://cran.r-project.org/web/packages/ExclusionTable/index.html){.btn .btn-outline-primary .btn role="button"} [GitHub](https://github.com/entjos/ExclusionTable/){.btn .btn-outline-primary .btn role="button"} [Pkgdown](https://entjos.github.io/ExclusionTable/){.btn .btn-outline-primary .btn role="button"}
+[CRAN](https://cran.r-project.org/package=ExclusionTable){.btn .btn-outline-primary .btn role="button"} [GitHub](https://github.com/entjos/ExclusionTable/){.btn .btn-outline-primary .btn role="button"} 
+[Pkgdown](https://entjos.github.io/ExclusionTable/){.btn .btn-outline-primary .btn role="button"}
 
 ## TreeMineR
 [![R-CMD-check](https://github.com/entjos/TreeMineR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/entjos/TreeMineR/actions/workflows/R-CMD-check.yaml)
@@ -35,6 +38,7 @@ coverage](https://codecov.io/gh/entjos/TreeMineR/branch/master/graph/badge.svg)]
 
 This package is an implementation of tree-based scan statistics, that I developed for one of my PhD studies. The function can be used to identify event clusters along a hierarchical tree. One use case could for instance be in pharmacovigilance for identifying clusters of adverse events along side the ICD tree. If you interested in how we use the TreeMineR package in our research, you can find our pre-registered analysis plan [here](https://osf.io/sbevn).
 
+[CRAN](https://cran.r-project.org/package=TreeMineR){.btn .btn-outline-primary .btn role="button"}
 [GitHub](https://github.com/entjos/TreeMineR/){.btn .btn-outline-primary .btn role="button"}
 [Pkgdown](https://entjos.github.io/TreeMineR/){.btn .btn-outline-primary .btn role="button"}
 
