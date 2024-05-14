@@ -1,6 +1,6 @@
 ---
 title: "Comparing the confidence intervals of a Weibull model estimated with flexsurvreg() and optimx()"
-description: "This blog post is a follow up on my [previous post](/post/optim_weibull_reg.html) on optimising a Weibull regression model using `optimx()`. This time I'll try to find a solution for the discrepancy between the confidence interval estimates of the Weibull hazard function estimated with `optimx()` and `flexsurvreg()`."
+description: "This blog post is a follow up on my [previous post](https://www.joshua-entrop.com/post/optim_weibull_reg.html) on optimising a Weibull regression model using `optimx()`. This time I'll try to find a solution for the discrepancy between the confidence interval estimates of the Weibull hazard function estimated with `optimx()` and `flexsurvreg()`."
 author: "Joshua Philipp Entrop"
 date: '2020-10-25'
 output: html_document
@@ -9,11 +9,11 @@ tags: [R, survival analysis, manual optimisation]
 draft: FALSE
 ---
 
-[R Code](/rcode/optim_weibull_reg_follow_up.txt){.btn .btn-outline-primary .btn role="button"}
+[R Code](https://www.joshua-entrop.com/rcode/optim_weibull_reg_follow_up.txt){.btn .btn-outline-primary .btn role="button"}
 
-This blog post is a follow up on my [previous post](/post/optim_weibull_reg.html) on optimising a Weibull regression model using `optimx()`. This time I'll try to find a solution for the discrepancy between the confidence interval estimates of the Weibull hazard function estimated with `optimx()` and `flexsurvreg()`.
+This blog post is a follow up on my [previous post](https://www.joshua-entrop.comhttps://www.joshua-entrop.com/post/optim_weibull_reg.html) on optimising a Weibull regression model using `optimx()`. This time I'll try to find a solution for the discrepancy between the confidence interval estimates of the Weibull hazard function estimated with `optimx()` and `flexsurvreg()`.
 
-This post begins where my previous one ended. Hence, I suggest you to read my [previous post](/post/optim_weibull_reg.html) before reading this one. Also, I will use the `R` script of my previous post as starting point for this post. You can find the whole plain `R` script used in this post in `.txt` format [here](/rcode/optim_weibull_reg_follow_up.txt).
+This post begins where my previous one ended. Hence, I suggest you to read my [previous post](https://www.joshua-entrop.comhttps://www.joshua-entrop.com/post/optim_weibull_reg.html) before reading this one. Also, I will use the `R` script of my previous post as starting point for this post. You can find the whole plain `R` script used in this post in `.txt` format [here](https://www.joshua-entrop.com/rcode/optim_weibull_reg_follow_up.txt).
 
 ```{r include=FALSE}
 # 1. Prefix -------------------------------------------------------------------

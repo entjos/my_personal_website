@@ -57,7 +57,7 @@ legend("topleft",
 
 ```
 
-[R Code](/rcode/fpm_test_dfs.txt){.btn .btn-outline-primary .btn role="button"}
+[R Code](https://www.joshua-entrop.com/rcode/fpm_test_dfs.txt){.btn .btn-outline-primary .btn role="button"}
 
 Have you ever encountered a situation in which you wanted to test different degrees of freedom (DF) for a generalised survival model? I encounter this situation quite often and after writing for loops for looping through the different combinations of DFs for different spline functions, I decided to write a R function that does this for me instead.
 

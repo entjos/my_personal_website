@@ -8,7 +8,7 @@ tags: [R, linear regression, manual optimisation]
 output: html_document
 ---
 
-[R Code](/rcode/optim_linear_reg.txt){.btn .btn-outline-primary .btn role="button"}
+[R Code](https://www.joshua-entrop.com/rcode/optim_linear_reg.txt){.btn .btn-outline-primary .btn role="button"}
 
 If you want to optimise a function, the most important question of course is which function should be optimised? As it is taught in most statistic classes this function is in case of a linear regression model the distribution of the residuals $(R)$. We know that this distribution follows a normal distribution with mean 0 and a unknown standard deviation $\sigma$:
 

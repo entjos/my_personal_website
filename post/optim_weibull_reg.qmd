@@ -8,9 +8,9 @@ tags: [R, survival analysis, manual optimisation]
 draft: FALSE
 ---
 
-[R Code](/rcode/optim_weibull_reg.txt){.btn .btn-outline-primary .btn role="button"}
+[R Code](https://www.joshua-entrop.com/rcode/optim_weibull_reg.txt){.btn .btn-outline-primary .btn role="button"}
 
-In my previous blog post I showed how to optimise a Poisson regression model in the same manner. Optimising a Poisson and Weibull survival model using the likelihood function is quite similar. Hence, if you have any difficulties following this blog post, I would recommend you to read my previous blog post on optimising a Poisson regression model first. You can find my previous blog post [here](/post/optim_pois_reg.html). Please note, that you can download the `R` code that we will use throughout this post [here](/rcode/optim_weibull_reg.txt).
+In my previous blog post I showed how to optimise a Poisson regression model in the same manner. Optimising a Poisson and Weibull survival model using the likelihood function is quite similar. Hence, if you have any difficulties following this blog post, I would recommend you to read my previous blog post on optimising a Poisson regression model first. You can find my previous blog post [here](https://www.joshua-entrop.comhttps://www.joshua-entrop.com/post/optim_pois_reg.html). Please note, that you can download the `R` code that we will use throughout this post [here](https://www.joshua-entrop.com/rcode/optim_weibull_reg.txt).
 
 As in my previous blog posts, we will use the lung cancer data set included in the `{survival}` package as example for this post. For more information on this data set please take a look at the help file `?survival::lung` Specifically, we will model the survival of lung cancer patients in this data set by sex and age. This time we will use a Weibull regression model instead of a Poisson regression model to analyse the association between age, sex and survival of lung cancer patients.
 
@@ -208,7 +208,7 @@ lapply(1:nrow(coef_opt), function(i){
 
 We can see that the differences between our estimates and the estimates we would have gotten if we used `flexsurvreg()` to fit our model, are close to null. At least for the estimates yielded by the `newuoa` algorithm.
 
-Since we found the point estimates for our Weibull regression, we can now take the next step and calculate confidence intervals (CIs) for our estimates. For this we will use the Hessian matrix of our model. If you cannot follow the code below, please take a look at my [previouse post](https://www.joshua-entrop.com/post/optim_logit_reg_se/) where I explained how to compute CIs for estimates of a logistic regression model using the same approach.
+Since we found the point estimates for our Weibull regression, we can now take the next step and calculate confidence intervals (CIs) for our estimates. For this we will use the Hessian matrix of our model. If you cannot follow the code below, please take a look at my [previouse post](https://www.joshua-entrop.comhttps://www.joshua-entrop.com/post/optim_logit_reg_se/) where I explained how to compute CIs for estimates of a logistic regression model using the same approach.
 
 ```{r}
 # 8. Estimate the standard error ----------------------------------------------
@@ -348,4 +348,4 @@ legend("topleft",
 
 Interestingly, we see quite some differences between our estimates for the CI and `flexsurvreg()`'s estimates. Unfortunately, I didn't find a reason for this difference yet. So if you have a guess, please let me know.
 
-In this post today we fitted a Weibull regression by optimising its likelihood function using the `optimx()` function from the `{optimx}` package. I hope you got some new insides and ideas by reading this post. If you have any comments or suggestions, I would be happy to hear from you via [email](mailto:joshuaentrop@posteo.de), [twitter](https://twitter.com/entjos) or [LinkedIn](https://www.linkedin.com/in/joshua-entrop/).
+In this post today we fitted a Weibull regression by optimising its likelihood function using the `optimx()` function from the `{optimx}` package. I hope you got some new insides and ideas by reading this post. If you have any comments or suggestions, I would be happy to hear from you via [email](mailto:joshuaentrop@posteo.de), or [LinkedIn](https://www.linkedin.com/in/joshua-entrop/).

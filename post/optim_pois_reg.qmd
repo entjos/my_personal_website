@@ -8,9 +8,9 @@ tags: [R, survival analysis, manual optimisation]
 draft: FALSE
 ---
 
-[R Code](/rcode/optim_pois_reg.txt){.btn .btn-outline-primary .btn role="button"}
+[R Code](https://www.joshua-entrop.com/rcode/optim_pois_reg.txt){.btn .btn-outline-primary .btn role="button"}
 
-In this blog post, we will fit a Poisson regression model by maximising its likelihood function using `optimx()` in `R`. As an example we will use the lung cancer data set included in the `{survival}` package. The data set includes information on 228 lung cancer patients from the North Central Cancer Treatment Group (NCCTG). Specifically, we will estimate the survival of lung cancer patients by sex and age using a simple Poisson regression model. You can download the code that I will use throughout post [here](/rcode/optim_pois_reg.txt). The general survival function $S(t)$ for our model can be specified as
+In this blog post, we will fit a Poisson regression model by maximising its likelihood function using `optimx()` in `R`. As an example we will use the lung cancer data set included in the `{survival}` package. The data set includes information on 228 lung cancer patients from the North Central Cancer Treatment Group (NCCTG). Specifically, we will estimate the survival of lung cancer patients by sex and age using a simple Poisson regression model. You can download the code that I will use throughout post [here](https://www.joshua-entrop.com/rcode/optim_pois_reg.txt). The general survival function $S(t)$ for our model can be specified as
 
 $$ S(t) = \exp(-\lambda t) $$
 
@@ -55,7 +55,7 @@ $$\ln L_i = d_i \ln \lambda - \lambda t_i $$
 
 where $\lambda$ is defined as mentioned above.
 
-The next step is now to write our likelihood function as a function in R, which can be maximised by `optimx()`. Please keep in mind, that `optimx()` by default minimises the function we pass to it. However, in our case we need to find the maximum of our likelihood function. To yield the estimates, that maximise our function we can just ask `optimx()` to minimise the negative of our likelihood. For more information on setting up the likelihood function for `optimx()` or `optim()` please take a look at [this](/post/optim_linear_reg.html) earlier blog post.
+The next step is now to write our likelihood function as a function in R, which can be maximised by `optimx()`. Please keep in mind, that `optimx()` by default minimises the function we pass to it. However, in our case we need to find the maximum of our likelihood function. To yield the estimates, that maximise our function we can just ask `optimx()` to minimise the negative of our likelihood. For more information on setting up the likelihood function for `optimx()` or `optim()` please take a look at [this](https://www.joshua-entrop.com/post/optim_linear_reg.html) earlier blog post.
 
 Lets set up our likelihood function in R.
 
@@ -188,7 +188,7 @@ lapply(1:nrow(coef_opt), function(i){
 
 The mean difference between our estimates and the estimates obtained by using `flexsurvreg()` are close to zero. Seems like our optimisation using the log likelihood did a good job.
 
-However, the result obtained with `flexsurvreg()` provided us with estimates for the standard errors (SEs) of our hazard estimates, too. Since the measurement of uncertainty is at the heart of statistics, I think it is worthwhile to obtain the SEs for our estimates with the information provided by our `optimx()` call. For a more detailed discussion on how this is done please take a look at one of my previous blog posts [here](/post/optim_logit_reg_se.html).
+However, the result obtained with `flexsurvreg()` provided us with estimates for the standard errors (SEs) of our hazard estimates, too. Since the measurement of uncertainty is at the heart of statistics, I think it is worthwhile to obtain the SEs for our estimates with the information provided by our `optimx()` call. For a more detailed discussion on how this is done please take a look at one of my previous blog posts [here](https://www.joshua-entrop.com/post/optim_logit_reg_se.html).
 
 Let's obtain the SEs for our model by using the results from our `optimx()` call and compare them with the SEs obtained by `flexsurvreg()`.
 
