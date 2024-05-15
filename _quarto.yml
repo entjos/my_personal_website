@@ -1,5 +1,7 @@
 project:
   type: website
+  resources:
+    - rcode
 
 website:
   title: "Joshua Entrop"
