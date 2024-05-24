@@ -1,0 +1,51 @@
+<style>
+  table, th, td {
+    vertical-align: top;
+    border-collapse: separate;
+    border-spacing: 25px 0;
+    padding-bottom: 25px;
+  }
+  
+  td {
+   height: 100px;
+   min-width: 100px;
+  }
+  
+  a { 
+    color: inherit; 
+  }
+
+p {
+  display: inline;
+}
+</style>
+
+<% for (var i = 0; i < items.length; i++) {%>
+  <b><font size="+2"><%= items[i].year %></font></b>
+  <table>
+    <% for (var j = 0; j < items[i].publications.length; j++) {%>
+      <tr>
+        <td align='right'>
+          <font size="-1">
+          <% if(items[i].publications[j].pdf != null) {%>
+            <a href="<%- items[i].publications[j].pdf %>">PDF</a><br>
+          <%} %>
+          <% if(items[i].publications[j].osf != null) {%>
+            <a href="<%- items[i].publications[j].osf %>">OSF</a><br>
+          <%} %>
+          <% if(items[i].publications[j].bibtex != null) {%>
+            <a href="<%- items[i].publications[j].bibtex %>">Citation</a>
+          <%} %>
+        </font>
+        </td>
+        <td>
+          <b><%= items[i].publications[j].title %></b>
+          <% if(items[i].publications[j].info != null) {%>
+            <br><em><font size="-0.5"><%= items[i].publications[j].info %></font></em>
+          <%} %>
+          <br><em><font size="-0.5"><%= items[i].publications[j].authors %></font></em>
+        </td>
+      </tr>
+    <%} %>
+  </table>
+<%} %>

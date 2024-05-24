@@ -1,0 +1,17 @@
+---
+  - year: 2024
+    events:
+      - title: "Parametric Estimation of The Mean Number of Events in The Presence of Competing risks"
+        MMdd: June, 12
+        occasion: "Presentation at the Symposium on Statistical methods development in
+                   population-based survival analysis held at the 11th NordicEpi Conference, 2024,
+                   in Copenhagen"
+        slides: https://www.joshua-entrop.com/assets/presentations/p_mean_no_events_NordicEpi.pdf
+        materials: https://github.com/entjos/JointFPM_example_NordicEpi
+  - year: 2023
+    events:
+      - title: Reproducible Research
+        occasion: "Workshop at the method retreat of the epidemiology working group of the
+                   Nordic Lymphoma Group"
+        MMdd: May, 10
+        slides: https://www.joshua-entrop.com/assets/presentations/documentation_reproducibility_coding.pdf
