@@ -1,10 +1,11 @@
 project:
   type: website
   resources:
+    - assets
     - rcode
 
 website:
-  title: "Joshua Entrop"
+  title: "Joshua Entrop 👋"
   image: /pictures/icon.png
   favicon: /pictures/icon.png
   site-url: https://www.joshua-entrop.com
@@ -24,6 +25,8 @@ website:
         text: Blog
       - href: publications.qmd
         text: Publications
+      - href: talks.qmd
+        text: Talks
       - href: software.qmd
         text: Software
     right:
