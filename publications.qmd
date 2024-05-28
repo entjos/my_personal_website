@@ -1,10 +1,23 @@
 ---
 title: "Publications"
-description: "Being active in research, publishing, and sharing research results through peer-reviewed articles in scientific journals is an essential part of day-to-day work. This site includes a list of publications from research projects that I've been involved in."
+description: "Being active in research, publishing, and sharing research results through peer-reviewed articles in scientific journals is an essential part of day-to-day work. This site includes a list of publications from research projects that I've been involved in as well as a list of my theses."
 listing:
+    - id: theses
+      template: assets/list_of_theses.ejs
+      contents: assets/theses.yaml
     - id: publications
       template: assets/list_of_publications.ejs
       contents: assets/publications.yaml
 page-layout: article
 title-block-banner: true
+toc: false
 ---
+
+## Theses
+
+:::{#theses}
+:::
+
+## Peer-Reviewed Publications
+:::{#publications}
+:::

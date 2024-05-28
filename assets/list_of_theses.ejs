@@ -1,0 +1,40 @@
+<style>
+  table, th, td {
+    vertical-align: top;
+    border-collapse: separate;
+    border-spacing: 15px 0;
+    padding-bottom: 25px;
+  }
+  
+  td {
+   height: 100px;
+   min-width: 40px;
+  }
+  
+  a { 
+    color: inherit; 
+  }
+
+p {
+  display: inline;
+}
+</style>
+
+<table>
+<% for (var i = 0; i < items.length; i++) {%>
+  <tr>
+    <td align='right'>
+      <font size="-1">
+        <a href="<%- items[i].pdf %>">PDF</a>
+    </font>
+    </td>
+    <td>
+      <b><%= items[i].type %></b> (<%= items[i].year %>) <a href = "https://creativecommons.org/licenses/by-nd/4.0/"><img src="https://mirrors.creativecommons.org/presskit/buttons/88x31/svg/by-nd.svg" width = "40"></a><br>
+      <font size="-0.5">
+        <%= items[i].title %><br>
+        <em><%= items[i].info %></em>
+      </font>
+    </td>
+  </tr>
+<%} %>
+</table>
