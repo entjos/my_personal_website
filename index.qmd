@@ -1,5 +1,5 @@
 ---
-title: Joshua Philipp Entrop
+title: Home
 subtitle: Statistican | PhD student <br> [@Karolinska Institutet](https://ki.se/en/people/joshua-entrop)
 image: pictures/avatar.jpg
 image-alt: "Joshua looking happy after drinking a beer in Krakow"
