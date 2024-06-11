@@ -1,6 +1,12 @@
 ---
   - year: 2024
     events:
+      - title: "Utilisation of Healthcare in Children Born to Lymphoma Survivors"
+        MMdd: June, 14
+        occasion: "Presentation at the Symposium on Statistical methods development in
+                   population-based survival analysis held at the 11th NordicEpi Conference, 2024,
+                   in Copenhagen"
+        slides: https://www.joshua-entrop.com/assets/presentations/p_health_care_utilisation_NordicEpi.pdf
       - title: "Parametric Estimation of The Mean Number of Events in The Presence of Competing risks"
         MMdd: June, 12
         occasion: "Presentation at the Symposium on Statistical methods development in
