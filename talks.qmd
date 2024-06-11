@@ -1,6 +1,6 @@
 ---
 title: "Talks"
-description: "Presenting and discussing research findings is at the heart of research and probably also the most fun part of it. On this side you can find a list with some selected talks of mine. You can also find the presentations slides for each talk in the list below. For some talks, I also provide some additional material, e.g., scripts that I used to create the figures and tables included in a talk. Please note that the general lisence conditions apply for the uploaded material if not otherwise stated."
+description: "Presenting and discussing research findings is at the heart of research and probably also the most fun part of it. On this side you can find a list with some selected talks of mine. You can also find the presentations slides for each talk in the list below. For some talks, I also provide some additional material, e.g., scripts that I used to create the figures and tables included in a talk. Please note that the general lisence conditions stated in the general terms apply for the uploaded material if not otherwise stated."
 listing:
     - id: talks
       template: assets/list_of_talks.ejs
