@@ -1,0 +1,324 @@
+---
+title: "Estimating a Poissone Model Using M-Estimation"
+author: "Joshua Philipp Entrop"
+description: "In this blog post, I will describe how to use M-estimation to estimate a regular Poissone model as well as an IP weighted version of it. M-estimation is a usefull tool for estimating a set of models that are depenend on each other."
+editor: visual
+---
+
+I recently took a very nice and useful course on M-estimation titled The ABC of M-Estimation given by ... The course was given as a pre-conference course at this year's annual SER conference. As I understood, this was not the first and maybe last time the course was and will be given. So check out next year's program of the SER meeting, if you want to learn more. I can just highly recommend this course.
+
+But let's get started! The aim of this blog post is to talk you through how to use M-estimation for estimating a Poisson model. This blog post builds upon a previous post on using maximum likelihood estimation (MLE) for estimating a Poisson model. So, if you haven't read the blog post yet, I would highly recommend to take a look at it. This blog post will be structured as followed: I will first give a prove of concept and just compare the estimates obtained using MLE and M-estimation. In the second part, I will show how to use M-estimation to get different contrasts using the estimated model and the last part will be on estimation an standardised Poisson model.
+
+## Data set up
+
+This blog post will use the `survival::lung` dataset, which includes information on 228 patients diagnosed with advanced lung cancer. As an example, we will take a look at sex difference in survival in this patients group. If you want to know more about the dataset, you can take a look at the [original publication](https://doi.org/10.1200/JCO.1994.12.3.601). The original dataset used a 1/2 coding for binary variables. So let's change this to 0/1 for continence. Before, we start, we also need to load all the packages, that we will need for this session.
+
+```{r}
+# 1. Prefix -------------------------------------------------------------------
+
+# Remove all files from ls
+rm(list = ls())
+
+# Loading packages
+require(survival)
+require(rootSolve)
+require(dplyr)
+require(tibble)
+require(data.table)
+
+# 2. Loading dataset ----------------------------------------------------------
+
+#Reading the example data set lung from the survival package
+lung <- as.data.frame(survival::lung)
+
+#Recode dichotomous vairables
+lung$female <- ifelse(lung$sex == 2, 1, 0)
+lung$status_n <- ifelse(lung$status == 2, 1, 0)
+
+# Define model data for futher use
+model_data <- lung[, c("status_n", "time", "female", "age")] |> 
+  rename("d"  = status_n,
+         "t"  = time,
+         "x1" = female,
+         "x2" = age)
+```
+
+## M-estimation of a regular Poisson model
+
+In the previous blog post, we fitted a Poisson model using age and sex as predictors of survival. As first step, let's just re-produce that analysis using M-estimation instead of MLE. Before we can dive into the estimation of our models we need to go through some math in order to be able to set up our estimation equation.
+
+In general a M-estimator can be defined as
+
+$$
+\hat{\theta} = \arg \min_\theta \bigg[ \sum_{i=1}^n \rho(O_i, \theta) \bigg].
+$$
+
+First we need to define the log-likelihood of our Poisson model. The survival function for a common Poisson model with a constant hazard function can be defined as
+
+$$
+S(t) = \exp(-\lambda t)
+$$ with $\lambda = \exp(\beta_0 + \beta_1 x_1 + \beta_2 x_2),$
+
+where $x_1$ is a indicator variable for the patient's sex (0=male/1=female) and $x_2$ is a contentious age at lung cancer diagnosis. Based on the survival function and the hazard function, we can define the likelihood function of our model. The general likelihood for right censored survival data is defined as:
+
+$$
+L(\theta|d, t, \mathbf{x}) = \prod_{i=1}^n h(\mathbf{x}_i)^{d_i} S(t_i, \mathbf{x}_i).
+$$
+
+Taking the log gives us the log likelihood function denoted $\ell(\cdot)$:
+
+$$
+\ell(\theta|d, t, \mathbf{x}) = \sum_{i=1}^n d_i \log[h(\mathbf{x}_i)] + \log[S(t_i, \mathbf{x}_i)].
+$$
+
+If we now plug in our hazard and survival function in to this function, we get the log likelihood function for our Poisson model.
+
+$$
+\ell(\theta|d, t, \mathbf{x}) = \sum_{i=1}^n d_i \mathbf{\beta}'\mathbf{x}_i - \exp(\mathbf{\beta}'\mathbf{x}_i) t_i
+$$
+
+For estimating our model using M-estimation, we need to get the first partial derivatives of our log likelihood function with regards to the function parameters $\mathbf{\beta}$. Using the chain rule we get derive the following general form of the partial derivative of our log likelihood function.
+
+$$
+\frac{\partial}{\partial x_j} \ell(\theta|d, t, \mathbf{x}) = \sum_{i=1}^n d_i x_{ij} - \exp(\mathbf{\beta_j}x_{ij}) x_{ij}
+$$
+
+However, for our estimating equation, we need to get the Jacobian for our full log likelihood, i.e., a vector of partial derivatives with regards to all parameters in the likelihood. A general form for a likelihood with $j$ parameters can be defined as follows:
+
+$$
+\triangledown \ell(\theta|d, t, \mathbf{x}) = 
+\begin{bmatrix}
+\frac{\partial}{\partial \beta_0} \ell(\theta|d, t, \mathbf{x}) \\
+\frac{\partial}{\partial \beta_1} \ell(\theta|d, t, \mathbf{x}) \\
+\vdots \\
+\frac{\partial}{\partial \beta_j} \ell_i(\theta|d, t, \mathbf{x})
+\end{bmatrix} =
+\begin{bmatrix}
+\sum_{i=1}^n d_i - \exp(\beta_0)t_i  \\
+\sum_{i=1}^n d_i x_{1i} - \exp(\beta_1x_{1i})t_i  \\
+\vdots \\
+\sum_{i=1}^n d_i x_{ji} - \exp(\beta_1x_{ji})t_i  \\
+\end{bmatrix}
+$$
+
+Now, having all partial derivatives in place, we can define our estimating function, which is the inner part of our estimating equation, i.e., $\rho(O_i, \theta)$.
+
+```{r}
+# Define estimating functions
+ef1 <- \(O, theta) O$d * 1    - exp(cbind(1, O$x1, O$x2) %*% theta) * O$t * 1
+ef2 <- \(O, theta) O$d * O$x1 - exp(cbind(1, O$x1, O$x2) %*% theta) * O$t * O$x1
+ef3 <- \(O, theta) O$d * O$x2 - exp(cbind(1, O$x1, O$x2) %*% theta) * O$t * O$x2
+
+# Combine all estimating function into one function
+estimating_function <- function(O, theta){
+  
+  cbind(ef1(O, theta), 
+        ef2(O, theta), 
+        ef3(O, theta))
+  
+}
+```
+
+Next, we need to define the estimating equation, which is the some of the estimating function over all observations $i$, for a vector of parameters $\theta$:
+
+$$
+\sum_{i=1}^n \rho(O_i, \theta)
+$$
+
+```{r}
+estimating_equation <- function(par){
+  value = estimating_function(O = model_data, 
+                              theta = par)
+  colSums(value)                    
+}
+```
+
+Finally, we need to find the root of our estimating equation with regards to $\theta$.
+
+```{r}
+m_estimate <- rootSolve::multiroot(f = estimating_equation,     
+                                   start = c(0,0,0))
+
+data.frame(label = paste("beta", 0:2),
+           est   = exp(m_estimate$root))
+```
+
+There we go, we now fitted our Poisson regression model. Based on the results, we can see that females have a 39% lower hazard rate of death compared to males and that the hazard rate of hazard rate of death increases with 0.16% for each one year increase in age. However, we of course would also like to get some confidence intervals around our point estimates so that we can assess the uncertainty of our estimates. We can estimates the standard error of our estimates using the Sandwich variance estimator.
+
+$$
+\text{cov}(\hat{\theta}) = B(\hat{\theta}) ^{-1} F(\hat{\theta}) \big(B(\hat{\theta}) ^{-1}\big)^T
+$$
+
+where $B(\cdot)$ and $F(\cdot)$ is the bread and filling matrix, respectively. The bread matrix can be estimated as the mean of the negative partial derivatives of our estimating function across all observations:
+
+$$
+B(\hat{\theta}) = \frac{1}{n} \sum_{i=1}^n \bigg[ -\rho'(O_i, \hat{\theta}) \bigg]
+$$ So first, let's get the partial derivatives of each of the three estimating functions. For this, we will use the numerical approximation procedure implemented in the `numDeriv::jocabian()` function.
+
+```{r}
+# Sum of partial derivatives of the estimating functions 1 to 3
+ef1_prime <- numDeriv::jacobian(func = ef1,
+                                x    = m_estimate$root,
+                                O    = model_data) |> 
+  colSums()
+
+ef2_prime <- numDeriv::jacobian(func = ef2,
+                                x    = m_estimate$root,
+                                O    = model_data) |> 
+  colSums()
+
+ef3_prime <- numDeriv::jacobian(func = ef3,
+                                x    = m_estimate$root,
+                                O    = model_data) |> 
+  colSums()
+```
+
+Now we can compose our bread matrix based on the partial derivatives.
+
+```{r}
+# Combine partial derivatives to bread matrix
+bread <- matrix(c(-ef1_prime,
+                  -ef2_prime,
+                  -ef3_prime),
+                nrow = 3) / nrow(model_data)
+```
+
+Let's continue with the filling:
+
+$$
+F(\hat{\theta}) = \frac{1}{n} \sum_{i=1}^n \bigg[ \rho(O_i, \hat{\theta}) \boldsymbol{\cdot} \rho(O_i, \hat{\theta})^T \bigg]
+$$
+
+```{r}
+
+value_ef <- estimating_function(m_estimate$root,
+                                O = model_data)
+
+filling <- (t(value_ef) %*% value_ef) / nrow(lung)
+
+```
+
+Now that we the bread and the filling, we can get an estimate of the Sandwich variance and subsequently the Wald type confidence interval:
+
+$$
+\hat{\theta} \pm \sqrt{\frac{\text{Var}(\hat{\theta})}{n}}
+$$
+
+```{r}
+covar <- solve(bread) %*% filling %*% t(solve(bread))
+se  <- sqrt(diag(covar) / nrow(lung))
+
+data.frame(label = paste("beta", 0:2),
+           est = exp(m_estimate$root), 
+           lci = exp(m_estimate$root - 1.96 * se), 
+           uci = exp(m_estimate$root + 1.96 * se))
+
+
+```
+
+However, quite often one is not only interested in the estimates itself, but also in transformation of these estimates, e.g., the survival function.
+
+$$
+g = S(t|x) = \exp[-\exp(\beta x) t]
+$$
+
+$$
+\text{cov}[g(\theta)] \approx g'(\theta) \boldsymbol{\cdot} B(\theta)^{-1} \boldsymbol{\cdot} g'(\theta)
+$$
+$$
+\frac{\partial}{\partial \beta_i}g = \exp[-\exp(\beta x) t] -\exp[\beta x] t x_i
+$$
+
+```{r}
+# Create own delta method function
+delta_method <- function(x, t,bread, g, gprime){
+  
+  g <- do.call(g, list(x = x, t = t))
+  
+  gprime <- vapply(gprime, do.call, 
+                   FUN.VALUE = double(1),
+                   args = list(x = x, t = t))
+  
+  cov <- gprime %*% solve(bread) %*% gprime
+  se  <- sqrt(diag(cov) / nrow(lung))
+  
+  data.frame(est = g,
+             lci = g - 1.96 * se,
+             uci = g + 1.96 * se)
+}
+
+# Get estimates (theta hat)
+est <- m_estimate$root
+
+# Use delta method function
+delta_method(
+  x = c(1, 1, 50),
+  t =  1000,
+  bread = bread,
+  g = \(x, t) exp(-exp(x %*% est) * t),
+  gprime = list(\(x, t) exp(-exp(x %*% est) * t) * -exp(x %*% est) * x[[1]] * t,
+                \(x, t) exp(-exp(x %*% est) * t) * -exp(x %*% est) * x[[2]] * t,
+                \(x, t) exp(-exp(x %*% est) * t) * -exp(x %*% est) * x[[3]] * t)
+)
+
+```
+
+```{r}
+
+survival <- lapply(seq(0, 4000, length = 300), \(i){
+  
+ delta_method(
+  x = c(1, 1, 50),
+  t =  i,
+  g = \(x, t) exp(-exp(x %*% est) * t),
+  gprime = list(\(x, t) exp(-exp(x %*% est) * t) * -exp(x %*% est) * x[[1]] * t,
+                \(x, t) exp(-exp(x %*% est) * t) * -exp(x %*% est) * x[[2]] * t,
+                \(x, t) exp(-exp(x %*% est) * t) * -exp(x %*% est) * x[[3]] * t)
+)
+  
+}) |> rbindlist()
+
+survival$t <- seq(0, 4000, length = 300)
+
+plot.new()
+plot.window(xlim = c(0, 4000),
+            ylim = c(0, 1))
+axis(1)
+axis(2)
+
+polygon(c(survival$t, rev(survival$t)),
+        c(survival$lci, rev(survival$uci)),
+        border = NA,
+        col = "grey")
+
+lines(survival$t,
+      survival$est)
+
+```
+
+```{r}
+
+estimating_function <- function(data){
+  
+  t  <- data$time
+  d  <- data$status_n
+  x1 <- data$female
+  x2 <- data$age
+  
+  function(theta){
+    ef1 <- d * 1  - exp(theta[1]) * t * 1
+    ef2 <- d * x1 - exp(theta[2]) * t * x1
+    ef3 <- d * x2 - exp(theta[3]) * t * x2
+    
+    c(ef1, ef2, ef3)
+  }
+}
+
+test <- geex::m_estimate(estimating_function,
+                         data = lung,
+                         root_control = geex::setup_root_control(start = c(0,0,0)))
+
+geex::roots(test)
+```
+
+## M-estimation of an IP weighted Poisson model
