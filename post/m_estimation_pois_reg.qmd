@@ -3,6 +3,7 @@ title: "Estimating a Poissone Model Using M-Estimation"
 author: "Joshua Philipp Entrop"
 description: "In this blog post, I will describe how to use M-estimation to estimate a regular Poissone model as well as an IP weighted version of it. M-estimation is a usefull tool for estimating a set of models that are depenend on each other."
 editor: visual
+draft: TRUE
 ---
 
 I recently took a very nice and useful course on M-estimation titled The ABC of M-Estimation given by ... The course was given as a pre-conference course at this year's annual SER conference. As I understood, this was not the first and maybe last time the course was and will be given. So check out next year's program of the SER meeting, if you want to learn more. I can just highly recommend this course.
@@ -224,8 +225,7 @@ $$
 
 $$
 \text{cov}[g(\theta)] \approx g'(\theta) \boldsymbol{\cdot} B(\theta)^{-1} \boldsymbol{\cdot} g'(\theta)
-$$
-$$
+$$ $$
 \frac{\partial}{\partial \beta_i}g = \exp[-\exp(\beta x) t] -\exp[\beta x] t x_i
 $$
 
@@ -270,6 +270,7 @@ survival <- lapply(seq(0, 4000, length = 300), \(i){
  delta_method(
   x = c(1, 1, 50),
   t =  i,
+  bread = bread,
   g = \(x, t) exp(-exp(x %*% est) * t),
   gprime = list(\(x, t) exp(-exp(x %*% est) * t) * -exp(x %*% est) * x[[1]] * t,
                 \(x, t) exp(-exp(x %*% est) * t) * -exp(x %*% est) * x[[2]] * t,
