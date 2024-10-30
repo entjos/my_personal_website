@@ -1,6 +1,11 @@
 ---
   - year: 2024
     events:
+      - title: "A Short Introduction to Directed Acyclic Graphs (DAGs)"
+        MMdd: October, 31
+        occasion: "Presentation at the unit for efficacy and safety at the Swedish Medical
+                   Product Agency (Läkemedelsverket), Uppsala, Sweden"
+        slides: https://www.joshua-entrop.com/assets/presentations/p_DAGs_LV.pdf
       - title: "Utilisation of Healthcare in Children Born to Lymphoma Survivors"
         MMdd: June, 14
         occasion: "Presentation at the Symposium on Statistical methods development in
