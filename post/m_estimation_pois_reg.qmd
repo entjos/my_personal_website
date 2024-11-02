@@ -15,8 +15,7 @@ But let's get started! The aim of this blog post is to talk you through how to u
 This blog post will use the `survival::lung` dataset, which includes information on 228 patients diagnosed with advanced lung cancer. As an example, we will take a look at sex difference in survival in this patients group. If you want to know more about the dataset, you can take a look at the [original publication](https://doi.org/10.1200/JCO.1994.12.3.601). The original dataset used a 1/2 coding for binary variables. So let's change this to 0/1 for continence. Before, we start, we also need to load all the packages, that we will need for this session.
 
 ```{r}
-# 1. Prefix -------------------------------------------------------------------
-
+# Prefix --------------------------------------------------------------------------
 # Remove all files from ls
 rm(list = ls())
 
@@ -27,7 +26,7 @@ require(dplyr)
 require(tibble)
 require(data.table)
 
-# 2. Loading dataset ----------------------------------------------------------
+# Loading dataset -----------------------------------------------------------------
 
 #Reading the example data set lung from the survival package
 lung <- as.data.frame(survival::lung)
@@ -144,17 +143,21 @@ data.frame(label = paste("beta", 0:2),
            est   = exp(m_estimate$root))
 ```
 
-There we go, we now fitted our Poisson regression model. Based on the results, we can see that females have a 39% lower hazard rate of death compared to males and that the hazard rate of hazard rate of death increases with 0.16% for each one year increase in age. However, we of course would also like to get some confidence intervals around our point estimates so that we can assess the uncertainty of our estimates. We can estimates the standard error of our estimates using the Sandwich variance estimator.
+## Obtaining confidence intervals for our estimates
+
+There we go, we now fitted our Poisson regression model using M-estimation. Based on the results, we can see that females have a 39% lower hazard rate of death compared to males and that the hazard rate of death increases with 0.16% for each one year increase in age. However, we most likely would also be interested in getting some confidence intervals around our point estimates so that we can assess the uncertainty of our estimates. For this we can estimate the standard error and subsequent confidence intervals for our estimates using the Sandwich Variance estimator:
 
 $$
 \text{cov}(\hat{\theta}) = B(\hat{\theta}) ^{-1} F(\hat{\theta}) \big(B(\hat{\theta}) ^{-1}\big)^T
 $$
 
-where $B(\cdot)$ and $F(\cdot)$ is the bread and filling matrix, respectively. The bread matrix can be estimated as the mean of the negative partial derivatives of our estimating function across all observations:
+where $B(\cdot)$ and $F(\cdot)$ is the bread and filling matrix, respectively. Let's start by baking the bread. The bread matrix can be estimated as the mean of the negative partial derivatives of our estimating function across all observations:
 
 $$
 B(\hat{\theta}) = \frac{1}{n} \sum_{i=1}^n \bigg[ -\rho'(O_i, \hat{\theta}) \bigg]
-$$ So first, let's get the partial derivatives of each of the three estimating functions. For this, we will use the numerical approximation procedure implemented in the `numDeriv::jocabian()` function.
+$$
+
+Let's get the partial derivatives of each of the three estimating functions. For this, we will use the numerical approximation procedure implemented in the `numDeriv::jocabian()` function.
 
 ```{r}
 # Sum of partial derivatives of the estimating functions 1 to 3
@@ -184,10 +187,10 @@ bread <- matrix(c(-ef1_prime,
                 nrow = 3) / nrow(model_data)
 ```
 
-Let's continue with the filling:
+Once we have have the bread, we can continue with the filling, which is the average of the dot-product of our estimating function across all observations:
 
 $$
-F(\hat{\theta}) = \frac{1}{n} \sum_{i=1}^n \bigg[ \rho(O_i, \hat{\theta}) \boldsymbol{\cdot} \rho(O_i, \hat{\theta})^T \bigg]
+F(\hat{\theta}) = \frac{1}{n} \sum_{i=1}^n \bigg[ \rho(O_i, \hat{\theta})^T \boldsymbol{\cdot} \rho(O_i, \hat{\theta}) \bigg]
 $$
 
 ```{r}
@@ -217,17 +220,29 @@ data.frame(label = paste("beta", 0:2),
 
 ```
 
-However, quite often one is not only interested in the estimates itself, but also in transformation of these estimates, e.g., the survival function.
+## Obtaining confidence intervals for the survival function
+
+However, quite often one is not only interested in the estimates itself, but also in transformation of these estimates, e.g., the survival function:
 
 $$
 g = S(t|x) = \exp[-\exp(\beta x) t]
 $$
 
+There are two ways of estimating the survival function in this situation. The first option is to use the delta method for obtaining confidence intervals around our transformed estimates, i.e., the probability of surviving until a certain time point. The other option is to estimate the quantity of interest inside the M-estimation procedure. We can just add the survival probability at different time points to the estimating functions. However, I would usually prefer the first option as I kind of like to first fit the main model and then in a second step obtain different quantities that I'm interest in based on the model. So let's get started with obtaining confidence interval for the survival function using the delta method.
+
+We can also use the Sandwich variance estimator for estimating the variance of the survival function. For this we need the partial derivative of our transformation function $g(\theta)$, which is in our case the survival function, with regards to our estimates $\beta$. The variance estimator is then defined as
+
 $$
 \text{cov}[g(\theta)] \approx g'(\theta) \boldsymbol{\cdot} B(\theta)^{-1} \boldsymbol{\cdot} g'(\theta)
-$$ $$
-\frac{\partial}{\partial \beta_i}g = \exp[-\exp(\beta x) t] -\exp[\beta x] t x_i
 $$
+
+with the derivative of the survival function being
+
+$$
+\frac{\partial}{\partial \beta_i}g = \exp[-\exp(\beta x) t] -\exp[\beta x] t x_i.
+$$
+
+Based on these function we can write our own small delta method function in R.
 
 ```{r}
 # Create own delta method function
@@ -246,7 +261,11 @@ delta_method <- function(x, t,bread, g, gprime){
              lci = g - 1.96 * se,
              uci = g + 1.96 * se)
 }
+```
 
+Using this general function we can then, for instance, estimate a confidence interval for the probability of surviving more than 1 000 days in females with lung cancer that have been 50 years at the date of their diagnosis.
+
+```{r}
 # Get estimates (theta hat)
 est <- m_estimate$root
 
@@ -260,66 +279,59 @@ delta_method(
                 \(x, t) exp(-exp(x %*% est) * t) * -exp(x %*% est) * x[[2]] * t,
                 \(x, t) exp(-exp(x %*% est) * t) * -exp(x %*% est) * x[[3]] * t)
 )
-
 ```
 
-```{r}
+However, most likely we will not only be interested in getting a single survival probability but rather a survival function with accompanying confidence intervals. This can also easily be done with a loop over the time argument in our delta method function.
 
+```{r}
+# Creating the data for the plot --------------------------------------------------
+# Looping over time
 survival <- lapply(seq(0, 4000, length = 300), \(i){
   
- delta_method(
-  x = c(1, 1, 50),
-  t =  i,
-  bread = bread,
-  g = \(x, t) exp(-exp(x %*% est) * t),
-  gprime = list(\(x, t) exp(-exp(x %*% est) * t) * -exp(x %*% est) * x[[1]] * t,
-                \(x, t) exp(-exp(x %*% est) * t) * -exp(x %*% est) * x[[2]] * t,
-                \(x, t) exp(-exp(x %*% est) * t) * -exp(x %*% est) * x[[3]] * t)
-)
+  delta_method(
+    x = c(1, 1, 50),
+    t =  i,
+    bread = bread,
+    g = \(x, t) exp(-exp(x %*% est) * t),
+    gprime = list(\(x, t) exp(-exp(x %*% est) * t) * -exp(x %*% est) * x[[1]] * t,
+                  \(x, t) exp(-exp(x %*% est) * t) * -exp(x %*% est) * x[[2]] * t,
+                  \(x, t) exp(-exp(x %*% est) * t) * -exp(x %*% est) * x[[3]] * t)
+  )
   
+  # Combining the output in a single data.frame
 }) |> rbindlist()
 
+# Adding a time variable to the data.frame
 survival$t <- seq(0, 4000, length = 300)
 
+# Plotting ------------------------------------------------------------------------
+
+# Open new plot device
 plot.new()
+
+# Define plot windows
 plot.window(xlim = c(0, 4000),
             ylim = c(0, 1))
 axis(1)
 axis(2)
 
+# Add CIs
 polygon(c(survival$t, rev(survival$t)),
         c(survival$lci, rev(survival$uci)),
         border = NA,
         col = "grey")
 
+# Add point esitmates
 lines(survival$t,
       survival$est)
 
+# Annotate plot
+title(x = "Days After Lungcancer Diagnosis",
+      y = "Survival Probability")
+
+title(main = "Survival of Female Lungcancer Patients Aged 50 at Diagnosis",
+      adj = 0)
+
 ```
 
-```{r}
-
-estimating_function <- function(data){
-  
-  t  <- data$time
-  d  <- data$status_n
-  x1 <- data$female
-  x2 <- data$age
-  
-  function(theta){
-    ef1 <- d * 1  - exp(theta[1]) * t * 1
-    ef2 <- d * x1 - exp(theta[2]) * t * x1
-    ef3 <- d * x2 - exp(theta[3]) * t * x2
-    
-    c(ef1, ef2, ef3)
-  }
-}
-
-test <- geex::m_estimate(estimating_function,
-                         data = lung,
-                         root_control = geex::setup_root_control(start = c(0,0,0)))
-
-geex::roots(test)
-```
-
-## M-estimation of an IP weighted Poisson model
+Here we go, we now managed to plot a survival function together with accompanying confidence intervals based using M-estimation. You might wonder now why we did all this, if we could have gotten the same result using our standard `glm()` function. Obviously, we could have obtained this result with a standard likelihood based method, but I think this a nice start for diving deeper into M-estimation. One nice extension of this approach is the possibility to fit multiple models together. This comes in handy if we, for instance, want to use inverse probability wights. Using M-estimation we can fit our main model of interest and the model for obtaining the weights at the same time. By this our standard error are also going automatically going to be adjusted for the uncertainty arising from the model that we use for estimating our wights. However, that will maybe be the topic of an follow-up post.
