@@ -6,7 +6,7 @@ editor: visual
 draft: TRUE
 ---
 
-I recently took a very nice and useful course on M-estimation titled The ABC of M-Estimation given by ... The course was given as a pre-conference course at this year's annual SER conference. As I understood, this was not the first and maybe last time the course was and will be given. So check out next year's program of the SER meeting, if you want to learn more. I can just highly recommend this course.
+I recently took a very nice and useful course on M-estimation titled The ABC of M-Estimation given by [Paul Zivich](https://sph.unc.edu/adv_profile/paul-zivich/), Rachael Ross, and [Bonnie Shook-Sa](https://sph.unc.edu/adv_profile/bonnie-shook-sa-drph/). The course was given as a pre-conference course at this year's annual SER conference. As I understood, this was not the first and maybe last time the course was and will be given. So check out next year's program of the SER meeting, if you want to learn more. I can just highly recommend this course.
 
 But let's get started! The aim of this blog post is to talk you through how to use M-estimation for estimating a Poisson model. This blog post builds upon a previous post on using maximum likelihood estimation (MLE) for estimating a Poisson model. So, if you haven't read the blog post yet, I would highly recommend to take a look at it. This blog post will be structured as followed: I will first give a prove of concept and just compare the estimates obtained using MLE and M-estimation. In the second part, I will show how to use M-estimation to get different contrasts using the estimated model and the last part will be on estimation an standardised Poisson model.
 
