@@ -1,20 +1,23 @@
 ---
 title: "Estimating a Poissone Model Using M-Estimation"
 author: "Joshua Philipp Entrop"
-description: "In this blog post, I will describe how to use M-estimation to estimate a regular Poissone model as well as an IP weighted version of it. M-estimation is a usefull tool for estimating a set of models that are depenend on each other."
+date: "2024-11-03"
+description: "In this blog post, I will describe how to use M-estimation to estimate a regular Poissone model. M-estimation is a usefull tool for estimating a set of models that are depenend on each other. This post aims to give a short introduction using a very simple model."
 editor: visual
+categories: [R, M-estimation, survival analysis]
+tags: [R, M-estimation, survival analysis]
 draft: TRUE
 ---
 
-I recently took a very nice and useful course on M-estimation titled The ABC of M-Estimation given by [Paul Zivich](https://sph.unc.edu/adv_profile/paul-zivich/), Rachael Ross, and [Bonnie Shook-Sa](https://sph.unc.edu/adv_profile/bonnie-shook-sa-drph/). The course was given as a pre-conference course at this year's annual SER conference. As I understood, this was not the first and maybe last time the course was and will be given. So check out next year's program of the SER meeting, if you want to learn more. I can just highly recommend this course.
+I recently took a very nice and useful course on M-estimation titled The ABC of M-Estimation given by [Paul Zivich](https://sph.unc.edu/adv_profile/paul-zivich/), Rachael Ross, and [Bonnie Shook-Sa](https://sph.unc.edu/adv_profile/bonnie-shook-sa-drph/). The course was given as a pre-conference course at this year's annual [SER](https://epiresearch.org/) conference. As I understood, this was not the last time the course will be given. So check out next year's program of the SER meeting, if you want to learn more. I can just highly recommend this course.
 
-But let's get started! The aim of this blog post is to talk you through how to use M-estimation for estimating a Poisson model. This blog post builds upon a previous post on using maximum likelihood estimation (MLE) for estimating a Poisson model. So, if you haven't read the blog post yet, I would highly recommend to take a look at it. This blog post will focus on estimating a Poisson model and some transformations of it using M-estimation and the delta method.
+But let's get started! The aim of this blog post is to talk you through (1) how to use M-estimation for estimating a Poisson model and (2) how to predict survival probabilities with accompanying confidence intervals from it. This post builds upon a [previous post](https://www.joshua-entrop.com/post/optim_pois_reg.html) on using maximum likelihood estimation (MLE) for estimating a Poisson model. So, if you haven't read the blog post yet, I would recommend to take a look at it.
 
 ## Data set up
 
 This blog post will use the `survival::lung` dataset, which includes information on 228 patients diagnosed with advanced lung cancer. As an example, we will take a look at sex difference in survival in this patients group. If you want to know more about the dataset, you can take a look at the [original publication](https://doi.org/10.1200/JCO.1994.12.3.601). The original dataset used a 1/2 coding for binary variables. So let's change this to 0/1 for continence. Before, we start, we also need to load all the packages, that we will need for this session.
 
-```{r}
+```{r,  warning = FALSE, message = FALSE}
 # Prefix --------------------------------------------------------------------------
 # Remove all files from ls
 rm(list = ls())
@@ -45,15 +48,15 @@ model_data <- lung[, c("status_n", "time", "female", "age")] |>
 
 ## M-estimation of a regular Poisson model
 
-In the previous blog post, we fitted a Poisson model using age and sex as predictors of survival. As first step, let's just re-produce that analysis using M-estimation instead of MLE. Before we can dive into the estimation of our models we need to go through some math in order to be able to set up our estimation equation.
+In the previous blog post, we fitted a Poisson model using age and sex as predictors of survival. So let's just re-produce that analysis using M-estimation instead of MLE. Before we can dive into the estimation of our models we need to go through some math in order to be able to set up our estimation equation.
 
-In general a M-estimator can be defined as
+Let's assume we a dataset which includes some observed data $O$ for $i=1, ..., n$ individuals. In general a M-estimate can be defined as a estimate $\theta$ that minimises our estimating function $\rho(\cdot)$ with regards to $\theta$:
 
 $$
-\hat{\theta} = \arg \min_\theta \bigg[ \sum_{i=1}^n \rho(O_i, \theta) \bigg].
-$$
+\hat{\theta} = \arg \min_\theta \bigg[ \sum_{i=1}^n \rho(O_i, \theta) \bigg],
+$$ 
 
-First we need to define the log-likelihood of our Poisson model. The survival function for a common Poisson model with a constant hazard function can be defined as
+where $\rho(\cdot)$ is a function of the observed data and a model parameter. The estimating function is a function that links our model parameter to the observed data. Hence, we first need to define a model for the observed data. In this example we would like to use a Poisson model to model the survival function of individuals included in the example dataset. Note that we can also estimate models with multiple parameters by stacking their estimating functions together, i.e., we need to find a set of estimates $\theta$ that minimises all estimating functions. But to get started let's define the log-likelihood of our Poisson model. The survival function for a common Poisson model with a constant hazard function can be defined as
 
 $$
 S(t) = \exp(-\lambda t)
@@ -71,19 +74,19 @@ $$
 \ell(\theta|d, t, \mathbf{x}) = \sum_{i=1}^n d_i \log[h(\mathbf{x}_i)] + \log[S(t_i, \mathbf{x}_i)].
 $$
 
-If we now plug in our hazard and survival function in to this function, we get the log likelihood function for our Poisson model.
+If we now plug in our hazard and survival function in to this function, we get the log-likelihood function for our Poisson model.
 
 $$
 \ell(\theta|d, t, \mathbf{x}) = \sum_{i=1}^n d_i \mathbf{\beta}'\mathbf{x}_i - \exp(\mathbf{\beta}'\mathbf{x}_i) t_i
 $$
 
-For estimating our model using M-estimation, we need to get the first partial derivatives of our log likelihood function with regards to the function parameters $\mathbf{\beta}$. Using the chain rule we get derive the following general form of the partial derivative of our log likelihood function.
+For estimating our model using M-estimation, we need to get the first partial derivatives of our log likelihood function with regards to the function parameters $\mathbf{\beta}$, because we are interested in finding an estimate $\theta$ that maximises our estimating function and the maximum of a function can be found by finding the root of its first derivative. Using the chain rule we get the following general form of the partial derivative of our log likelihood function.
 
 $$
 \frac{\partial}{\partial x_j} \ell(\theta|d, t, \mathbf{x}) = \sum_{i=1}^n d_i x_{ij} - \exp(\mathbf{\beta_j}x_{ij}) x_{ij}
 $$
 
-However, for our estimating equation, we need to get the Jacobian for our full log likelihood, i.e., a vector of partial derivatives with regards to all parameters in the likelihood. A general form for a likelihood with $j$ parameters can be defined as follows:
+However, for our estimating equation, we need to get the Jacobian ($\triangledown$) for our full log-likelihood, i.e., a vector of partial derivatives with regards to all parameters in the likelihood. A general form of the Jacobian for the likelihood function of a Poisson model with $j$ parameters can be defined as:
 
 $$
 \triangledown \ell(\theta|d, t, \mathbf{x}) = 
@@ -263,14 +266,14 @@ delta_method <- function(x, t,bread, g, gprime){
 }
 ```
 
-Using this general function we can then, for instance, estimate a confidence interval for the probability of surviving more than 1 000 days in females with lung cancer that have been 50 years at the date of their diagnosis.
+Using this general function we can then, for instance, estimate a confidence interval for the probability of surviving more than 1 000 days in males and with lung cancer that have been 50 years at the date of their diagnosis.
 
 ```{r}
 # Get estimates (theta hat)
 est <- m_estimate$root
 
-# Use delta method function
-delta_method(
+# Use delta method function to get the survival probability of females
+females <- delta_method(
   x = c(1, 1, 50),
   t =  1000,
   bread = bread,
@@ -279,6 +282,21 @@ delta_method(
                 \(x, t) exp(-exp(x %*% est) * t) * -exp(x %*% est) * x[[2]] * t,
                 \(x, t) exp(-exp(x %*% est) * t) * -exp(x %*% est) * x[[3]] * t)
 )
+
+# Use delta method function to get the survival probability of males
+males <- delta_method(
+  x = c(1, 0, 50),
+  t =  1000,
+  bread = bread,
+  g = \(x, t) exp(-exp(x %*% est) * t),
+  gprime = list(\(x, t) exp(-exp(x %*% est) * t) * -exp(x %*% est) * x[[1]] * t,
+                \(x, t) exp(-exp(x %*% est) * t) * -exp(x %*% est) * x[[2]] * t,
+                \(x, t) exp(-exp(x %*% est) * t) * -exp(x %*% est) * x[[3]] * t)
+)
+
+# Output results
+rbind(cbind(sex = "Females", females),
+      cbind(sex = "Males"  , males))
 ```
 
 However, most likely we will not only be interested in getting a single survival probability but rather a survival function with accompanying confidence intervals. This can also easily be done with a loop over the time argument in our delta method function.
