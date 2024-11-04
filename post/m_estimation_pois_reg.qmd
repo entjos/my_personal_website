@@ -6,12 +6,17 @@ description: "In this blog post, I will describe how to use M-estimation to esti
 editor: visual
 categories: [R, M-estimation, survival analysis]
 tags: [R, M-estimation, survival analysis]
+toc: FALSE
 draft: TRUE
 ---
 
-I recently took a very nice and useful course on M-estimation titled The ABC of M-Estimation given by [Paul Zivich](https://sph.unc.edu/adv_profile/paul-zivich/), Rachael Ross, and [Bonnie Shook-Sa](https://sph.unc.edu/adv_profile/bonnie-shook-sa-drph/). The course was given as a pre-conference course at this year's annual [SER](https://epiresearch.org/) conference. As I understood, this was not the last time the course will be given. So check out next year's program of the SER meeting, if you want to learn more. I can just highly recommend this course.
+[R Code](https://www.joshua-entrop.com/rcode/m_estimation_pois_reg.txt){.btn .btn-outline-primary .btn role="button"}
 
-But let's get started! The aim of this blog post is to talk you through (1) how to use M-estimation for estimating a Poisson model and (2) how to predict survival probabilities with accompanying confidence intervals from it. This post builds upon a [previous post](https://www.joshua-entrop.com/post/optim_pois_reg.html) on using maximum likelihood estimation (MLE) for estimating a Poisson model. So, if you haven't read the blog post yet, I would recommend to take a look at it.
+Since some time ago, I felt that I came across the term M-esitmation more often when reading articles on causal inference. Hence, it has been due time to learn a bit more about what M-estimation is about. This summer I was lucky enough to took a very nice and useful introductory workshop on M-estimation titled The ABC of M-Estimation given by [Paul Zivich](https://sph.unc.edu/adv_profile/paul-zivich/), Rachael Ross, and [Bonnie Shook-Sa](https://sph.unc.edu/adv_profile/bonnie-shook-sa-drph/). The workshop was given as a pre-conference course at this year's annual [SER](https://epiresearch.org/) conference. As I understood, this was not the last time the course will be given. So check out next year's program of the SER meeting, if you want to learn more. I can just highly recommend this course.
+
+But let's get our hands dirty and try to dive a little into what M-estimation is about! In this blog post I'll talk you through (1) how to use M-estimation for estimating a Poisson model and (2) how to predict survival probabilities with accompanying confidence intervals from it. This post builds upon a [previous post](https://www.joshua-entrop.com/post/optim_pois_reg.html) on using maximum likelihood estimation (MLE) for estimating a Poisson model. So, if you haven't read the blog post yet, I would recommend to take a look at it.
+
+Before we can start applying M-estimation to some data we need to go through some data preparation and a short theoretical background on M-estimation.
 
 ## Data set up
 
@@ -48,15 +53,15 @@ model_data <- lung[, c("status_n", "time", "female", "age")] |>
 
 ## M-estimation of a regular Poisson model
 
-In the previous blog post, we fitted a Poisson model using age and sex as predictors of survival. So let's just re-produce that analysis using M-estimation instead of MLE. Before we can dive into the estimation of our models we need to go through some math in order to be able to set up our estimation equation.
+In the previous blog post, we fitted a Poisson model using age and sex as predictors of survival. The idea of this blog post is to re-produce that analysis using M-estimation instead of MLE. Before we can dive into the estimation of our models we need to go through some math in order to be able to set up our estimation equation.
 
 Let's assume we a dataset which includes some observed data $O$ for $i=1, ..., n$ individuals. In general a M-estimate can be defined as a estimate $\theta$ that minimises our estimating function $\rho(\cdot)$ with regards to $\theta$:
 
 $$
 \hat{\theta} = \arg \min_\theta \bigg[ \sum_{i=1}^n \rho(O_i, \theta) \bigg],
-$$ 
+$$
 
-where $\rho(\cdot)$ is a function of the observed data and a model parameter. The estimating function is a function that links our model parameter to the observed data. Hence, we first need to define a model for the observed data. In this example we would like to use a Poisson model to model the survival function of individuals included in the example dataset. Note that we can also estimate models with multiple parameters by stacking their estimating functions together, i.e., we need to find a set of estimates $\theta$ that minimises all estimating functions. But to get started let's define the log-likelihood of our Poisson model. The survival function for a common Poisson model with a constant hazard function can be defined as
+where $\rho(\cdot)$ is a function of the observed data and a model parameter. The estimating function is a function that links our model parameter to the observed data. Hence, we first need to define a model for the observed data. In the example at hand we would like to use a Poisson model to model the survival function of individuals included in the example dataset. Note that we can also estimate models with multiple parameters by stacking their estimating functions together, i.e., we need to find a set of estimates $\theta$ that minimises all estimating functions. But to get started let's define the log-likelihood of our Poisson model. The survival function for a common Poisson model with a constant hazard function can be defined as
 
 $$
 S(t) = \exp(-\lambda t)
@@ -266,7 +271,7 @@ delta_method <- function(x, t,bread, g, gprime){
 }
 ```
 
-Using this general function we can then, for instance, estimate a confidence interval for the probability of surviving more than 1 000 days in males and with lung cancer that have been 50 years at the date of their diagnosis.
+Using this general function we can then, for instance, estimate a confidence interval for the probability of surviving more than 1 000 days in males and with lung cancer that have been 60 years at the date of their diagnosis.
 
 ```{r}
 # Get estimates (theta hat)
@@ -274,7 +279,7 @@ est <- m_estimate$root
 
 # Use delta method function to get the survival probability of females
 females <- delta_method(
-  x = c(1, 1, 50),
+  x = c(1, 1, 60),
   t =  1000,
   bread = bread,
   g = \(x, t) exp(-exp(x %*% est) * t),
@@ -285,7 +290,7 @@ females <- delta_method(
 
 # Use delta method function to get the survival probability of males
 males <- delta_method(
-  x = c(1, 0, 50),
+  x = c(1, 0, 60),
   t =  1000,
   bread = bread,
   g = \(x, t) exp(-exp(x %*% est) * t),
@@ -304,10 +309,10 @@ However, most likely we will not only be interested in getting a single survival
 ```{r}
 # Creating the data for the plot --------------------------------------------------
 # Looping over time
-survival <- lapply(seq(0, 4000, length = 300), \(i){
+survival <- lapply(seq(0, 1000, length = 300), \(i){
   
   delta_method(
-    x = c(1, 1, 50),
+    x = c(1, 1, 60),
     t =  i,
     bread = bread,
     g = \(x, t) exp(-exp(x %*% est) * t),
@@ -320,7 +325,7 @@ survival <- lapply(seq(0, 4000, length = 300), \(i){
 }) |> rbindlist()
 
 # Adding a time variable to the data.frame
-survival$t <- seq(0, 4000, length = 300)
+survival$t <- seq(0, 1000, length = 300)
 
 # Plotting ------------------------------------------------------------------------
 
@@ -328,7 +333,7 @@ survival$t <- seq(0, 4000, length = 300)
 plot.new()
 
 # Define plot windows
-plot.window(xlim = c(0, 4000),
+plot.window(xlim = c(0, 1000),
             ylim = c(0, 1))
 axis(1)
 axis(2)
@@ -344,12 +349,15 @@ lines(survival$t,
       survival$est)
 
 # Annotate plot
-title(x = "Days After Lungcancer Diagnosis",
+title(x = "Days After Lung Cancer Diagnosis",
       y = "Survival Probability")
 
-title(main = "Survival of Female Lungcancer Patients Aged 50 at Diagnosis",
+title(main = "Survival of Female Lungcancer Patients Aged 60 at Diagnosis",
       adj = 0)
 
+legend(0, 0.2,
+       legend = "95% CI",
+       fill   = "gray")
 ```
 
-Here we go, we now managed to plot a survival function together with accompanying confidence intervals based using M-estimation. You might wonder now why we did all this, if we could have gotten the same result using our standard `glm()` function. Obviously, we could have obtained this result with a standard likelihood based method, but I think this a nice start for diving deeper into M-estimation. One nice extension of this approach is the possibility to fit multiple models together. This comes in handy if we, for instance, want to use inverse probability wights. Using M-estimation we can fit our main model of interest and the model for obtaining the weights at the same time. By this our standard error are also going automatically going to be adjusted for the uncertainty arising from the model that we use for estimating our wights. However, that will maybe be the topic of an follow-up post.
+Here we go, we now managed to plot a survival function together with accompanying confidence intervals based using M-estimation. You might wonder now why we did all this, if we could have gotten the same result using our standard `glm()` function. Obviously, we could have obtained this result with a standard likelihood based method, but I think this a nice start for diving deeper into M-estimation. The main advantage of M-estimation is that it nicely generalises to stacking a whole bunch of models that depend on each other in one esitmating function. This comes in handy if we, for instance, want to use inverse probability wights. Using M-estimation we can fit our main model of interest and the model for obtaining the weights at the same time. Throguh this approach our standard error are also going to be automatically adjusted for the uncertainty arising from the model that we use for estimating our wights. I think that is pretty neat! However, that will be the topic of an follow-up post.

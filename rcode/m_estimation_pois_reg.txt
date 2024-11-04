@@ -1,0 +1,212 @@
+################################################################################
+# Title: Estimating a Poissone Model Using M-Estimation
+# Date: 2024-11-04
+#
+# Author: Joshua P. Entrop
+# Website: joshua-entrop.com
+################################################################################
+
+# Prefix --------------------------------------------------------------------------
+# Remove all files from ls
+rm(list = ls())
+
+# Loading packages
+require(survival)
+require(rootSolve)
+require(dplyr)
+require(tibble)
+require(data.table)
+
+# Loading dataset --------------------------------------------------------------
+
+#Reading the example data set lung from the survival package
+lung <- as.data.frame(survival::lung)
+
+#Recode dichotomous vairables
+lung$female <- ifelse(lung$sex == 2, 1, 0)
+lung$status_n <- ifelse(lung$status == 2, 1, 0)
+
+# Define model data for futher use
+model_data <- lung[, c("status_n", "time", "female", "age")] |>
+  rename("d"  = status_n,
+         "t"  = time,
+         "x1" = female,
+         "x2" = age)
+
+# 1. Estimate Poisson model ----------------------------------------------------
+
+#   1.1 Define estimating functions ============================================
+
+ef1 <- \(O, theta) O$d * 1    - exp(cbind(1, O$x1, O$x2) %*% theta) * O$t * 1
+ef2 <- \(O, theta) O$d * O$x1 - exp(cbind(1, O$x1, O$x2) %*% theta) * O$t * O$x1
+ef3 <- \(O, theta) O$d * O$x2 - exp(cbind(1, O$x1, O$x2) %*% theta) * O$t * O$x2
+
+# Combine all estimating function into one function
+estimating_function <- function(O, theta){
+
+  cbind(ef1(O, theta),
+        ef2(O, theta),
+        ef3(O, theta))
+
+}
+
+#   1.2 Define estimating equation  ============================================
+
+estimating_equation <- function(par){
+  value = estimating_function(O = model_data,
+                              theta = par)
+  colSums(value)
+}
+
+#   1.3 Solve estimating equation ==============================================
+
+m_estimate <- rootSolve::multiroot(f = estimating_equation,
+                                   start = c(0,0,0))
+
+data.frame(label = paste("beta", 0:2),
+           est   = exp(m_estimate$root))
+
+# 2. Estimate Confidence intervals ---------------------------------------------
+
+#   2.1 Estimate Bread Matrix ==================================================
+
+ef1_prime <- numDeriv::jacobian(func = ef1,
+                                x    = m_estimate$root,
+                                O    = model_data) |>
+  colSums()
+
+ef2_prime <- numDeriv::jacobian(func = ef2,
+                                x    = m_estimate$root,
+                                O    = model_data) |>
+  colSums()
+
+ef3_prime <- numDeriv::jacobian(func = ef3,
+                                x    = m_estimate$root,
+                                O    = model_data) |>
+  colSums()
+
+# Combine partial derivatives to bread matrix
+bread <- matrix(c(-ef1_prime,
+                  -ef2_prime,
+                  -ef3_prime),
+                nrow = 3) / nrow(model_data)
+
+#   2.3 Get the filling matrix =================================================
+
+value_ef <- estimating_function(m_estimate$root,
+                                O = model_data)
+
+filling <- (t(value_ef) %*% value_ef) / nrow(lung)
+
+#   2.4 Get confidence intervals using the Sandwich variance estimator =========
+
+covar <- solve(bread) %*% filling %*% t(solve(bread))
+se  <- sqrt(diag(covar) / nrow(lung))
+
+data.frame(label = paste("beta", 0:2),
+           est = exp(m_estimate$root),
+           lci = exp(m_estimate$root - 1.96 * se),
+           uci = exp(m_estimate$root + 1.96 * se))
+
+# 3. Predict the survival function for 60 year old males and females -----------
+
+#   3.1 Create own delta method function =======================================
+delta_method <- function(x, t,bread, g, gprime){
+
+  g <- do.call(g, list(x = x, t = t))
+
+  gprime <- vapply(gprime, do.call,
+                   FUN.VALUE = double(1),
+                   args = list(x = x, t = t))
+
+  cov <- gprime %*% solve(bread) %*% gprime
+  se  <- sqrt(diag(cov) / nrow(lung))
+
+  data.frame(est = g,
+             lci = g - 1.96 * se,
+             uci = g + 1.96 * se)
+}
+
+#   3.2 Predict survival probabilities at 1000 days ============================
+
+# Get estimates (theta hat)
+est <- m_estimate$root
+
+# Use delta method function to get the survival probability of females
+females <- delta_method(
+  x = c(1, 1, 60),
+  t =  1000,
+  bread = bread,
+  g = \(x, t) exp(-exp(x %*% est) * t),
+  gprime = list(\(x, t) exp(-exp(x %*% est) * t) * -exp(x %*% est) * x[[1]] * t,
+                \(x, t) exp(-exp(x %*% est) * t) * -exp(x %*% est) * x[[2]] * t,
+                \(x, t) exp(-exp(x %*% est) * t) * -exp(x %*% est) * x[[3]] * t)
+)
+
+# Use delta method function to get the survival probability of males
+males <- delta_method(
+  x = c(1, 0, 60),
+  t =  1000,
+  bread = bread,
+  g = \(x, t) exp(-exp(x %*% est) * t),
+  gprime = list(\(x, t) exp(-exp(x %*% est) * t) * -exp(x %*% est) * x[[1]] * t,
+                \(x, t) exp(-exp(x %*% est) * t) * -exp(x %*% est) * x[[2]] * t,
+                \(x, t) exp(-exp(x %*% est) * t) * -exp(x %*% est) * x[[3]] * t)
+)
+
+#   3.3 Plot survival function until 1000 days =================================
+
+# Creating the data for the plot --------------------------------------------------
+# Looping over time
+survival <- lapply(seq(0, 1000, length = 300), \(i){
+
+  delta_method(
+    x = c(1, 1, 60),
+    t =  i,
+    bread = bread,
+    g = \(x, t) exp(-exp(x %*% est) * t),
+    gprime = list(\(x, t) exp(-exp(x %*% est) * t) * -exp(x %*% est) * x[[1]] * t,
+                  \(x, t) exp(-exp(x %*% est) * t) * -exp(x %*% est) * x[[2]] * t,
+                  \(x, t) exp(-exp(x %*% est) * t) * -exp(x %*% est) * x[[3]] * t)
+  )
+
+  # Combining the output in a single data.frame
+}) |> rbindlist()
+
+# Adding a time variable to the data.frame
+survival$t <- seq(0, 1000, length = 300)
+
+# Plotting ------------------------------------------------------------------------
+
+# Open new plot device
+plot.new()
+
+# Define plot windows
+plot.window(xlim = c(0, 1000),
+            ylim = c(0, 1))
+axis(1)
+axis(2)
+
+# Add CIs
+polygon(c(survival$t, rev(survival$t)),
+        c(survival$lci, rev(survival$uci)),
+        border = NA,
+        col = "grey")
+
+# Add point esitmates
+lines(survival$t,
+      survival$est)
+
+# Annotate plot
+title(x = "Days After Lung Cancer Diagnosis",
+      y = "Survival Probability")
+
+title(main = "Survival of Female Lungcancer Patients Aged 60 at Diagnosis",
+      adj = 0)
+
+legend(0, 0.2,
+       legend = "95% CI",
+       fill   = "gray")
+
+# //////////////////////////////////////////////////////////////////////////////
+# END OF R-SCRIPT
