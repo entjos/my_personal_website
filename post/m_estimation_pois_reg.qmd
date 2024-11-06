@@ -7,12 +7,12 @@ editor: visual
 categories: [R, M-estimation, survival analysis]
 tags: [R, M-estimation, survival analysis]
 toc: FALSE
-draft: TRUE
+draft: FALSE
 ---
 
 [R Code](https://www.joshua-entrop.com/rcode/m_estimation_pois_reg.txt){.btn .btn-outline-primary .btn role="button"}
 
-Since some time ago, I felt that I came across the term M-esitmation more often when reading articles on causal inference. Hence, it has been due time to learn a bit more about what M-estimation is about. This summer I was lucky enough to took a very nice and useful introductory workshop on M-estimation titled The ABC of M-Estimation given by [Paul Zivich](https://sph.unc.edu/adv_profile/paul-zivich/), Rachael Ross, and [Bonnie Shook-Sa](https://sph.unc.edu/adv_profile/bonnie-shook-sa-drph/). The workshop was given as a pre-conference course at this year's annual [SER](https://epiresearch.org/) conference. As I understood, this was not the last time the course will be given. So check out next year's program of the SER meeting, if you want to learn more. I can just highly recommend this course.
+Since some time ago, I felt that I came across the term M-esitmation more often when reading articles on causal inference. Hence, it has been due time to learn a bit more about what M-estimation is about. This summer I was lucky enough to took a very nice and useful introductory workshop on M-estimation titled The ABC of M-Estimation given by [Paul Zivich](https://sph.unc.edu/adv_profile/paul-zivich/), Rachael Ross, and [Bonnie Shook-Sa](https://sph.unc.edu/adv_profile/bonnie-shook-sa-drph/). The workshop was given as a pre-conference course at this year's annual [SER](https://epiresearch.org/) conference. As I understood, this was not the last time the course will be given. So check out next year's program of the SER meeting, if you want to learn more. I can just highly recommend this course. They also wrote a nice [introductory article](https://doi.org/10.1093/ije/dyae030) on M-estimation, which was published in the International Journal of Epidemiology.
 
 But let's get our hands dirty and try to dive a little into what M-estimation is about! In this blog post I'll talk you through (1) how to use M-estimation for estimating a Poisson model and (2) how to predict survival probabilities with accompanying confidence intervals from it. This post builds upon a [previous post](https://www.joshua-entrop.com/post/optim_pois_reg.html) on using maximum likelihood estimation (MLE) for estimating a Poisson model. So, if you haven't read the blog post yet, I would recommend to take a look at it.
 
@@ -61,11 +61,15 @@ $$
 \hat{\theta} = \arg \min_\theta \bigg[ \sum_{i=1}^n \rho(O_i, \theta) \bigg],
 $$
 
-where $\rho(\cdot)$ is a function of the observed data and a model parameter. The estimating function is a function that links our model parameter to the observed data. Hence, we first need to define a model for the observed data. In the example at hand we would like to use a Poisson model to model the survival function of individuals included in the example dataset. Note that we can also estimate models with multiple parameters by stacking their estimating functions together, i.e., we need to find a set of estimates $\theta$ that minimises all estimating functions. But to get started let's define the log-likelihood of our Poisson model. The survival function for a common Poisson model with a constant hazard function can be defined as
+where $\rho(\cdot)$ is a function of the observed data and a model parameter. The estimating function is a function that links our model parameter to the observed data. Hence, we first need to define a model for the observed data. In the example at hand we would like to use a Poisson model to model the survival function of individuals included in the example dataset. Note that we can also estimate models with multiple parameters by stacking their estimating functions together, i.e., we need to find a set of estimates $\theta$ that minimises all estimating functions. However, we can not only estimate parameters of the same model, but we can also stack different models together using M-estimation and estimate them simultaneously. For instance, if we want to estimate an IPW weighted Poisson model we both need to estimate our structural model and the exposure model for estimating the weights. 
+
+But to get started let's just estimate a simple Poisson model. As a first step we need to define its log-likelihood function. The survival function for a common Poisson model with a constant hazard function can be defined as
 
 $$
 S(t) = \exp(-\lambda t)
-$$ with $\lambda = \exp(\beta_0 + \beta_1 x_1 + \beta_2 x_2),$
+$$ 
+
+with $\lambda = \exp(\beta_0 + \beta_1 x_1 + \beta_2 x_2),$
 
 where $x_1$ is a indicator variable for the patient's sex (0=male/1=female) and $x_2$ is a contentious age at lung cancer diagnosis. Based on the survival function and the hazard function, we can define the likelihood function of our model. The general likelihood for right censored survival data is defined as:
 
@@ -153,7 +157,7 @@ data.frame(label = paste("beta", 0:2),
 
 ## Obtaining confidence intervals for our estimates
 
-There we go, we now fitted our Poisson regression model using M-estimation. Based on the results, we can see that females have a 39% lower hazard rate of death compared to males and that the hazard rate of death increases with 0.16% for each one year increase in age. However, we most likely would also be interested in getting some confidence intervals around our point estimates so that we can assess the uncertainty of our estimates. For this we can estimate the standard error and subsequent confidence intervals for our estimates using the Sandwich Variance estimator:
+There we go! We now fitted our Poisson regression model using M-estimation. Based on the results, we can see that females have a 39% lower hazard rate of death compared to males and that the hazard rate of death increases with 1.6% for each one year increase in age. However, we most likely would also be interested in getting some confidence intervals around our point estimates so that we can assess the uncertainty of our estimates. For this we can estimate the standard error and subsequent confidence intervals for our estimates using the Sandwich Variance estimator:
 
 $$
 \text{cov}(\hat{\theta}) = B(\hat{\theta}) ^{-1} F(\hat{\theta}) \big(B(\hat{\theta}) ^{-1}\big)^T
@@ -360,4 +364,4 @@ legend(0, 0.2,
        fill   = "gray")
 ```
 
-Here we go, we now managed to plot a survival function together with accompanying confidence intervals based using M-estimation. You might wonder now why we did all this, if we could have gotten the same result using our standard `glm()` function. Obviously, we could have obtained this result with a standard likelihood based method, but I think this a nice start for diving deeper into M-estimation. The main advantage of M-estimation is that it nicely generalises to stacking a whole bunch of models that depend on each other in one esitmating function. This comes in handy if we, for instance, want to use inverse probability wights. Using M-estimation we can fit our main model of interest and the model for obtaining the weights at the same time. Throguh this approach our standard error are also going to be automatically adjusted for the uncertainty arising from the model that we use for estimating our wights. I think that is pretty neat! However, that will be the topic of an follow-up post.
+Here we go! We now managed to plot a survival function together with accompanying confidence intervals using M-estimation. You might wonder now why we did all this, if we could have gotten the same result using our standard `glm()` function? Obviously, we could have obtained this result with a standard likelihood based method, but I think this a nice starting point for diving deeper into M-estimation. The main advantage of M-estimation is that it nicely generalises to stacking a whole bunch of models that depend on each other in one esitmating equation This comes in handy if we, for instance, want to use inverse probability weights. Using M-estimation we can fit our main model of interest and the model for obtaining the weights at the same time. Through this approach our standard errors are also going to be automatically adjusted for the uncertainty arising from the model that we use for estimating our weights. I think that is pretty neat! However, that will be the topic of an follow-up post.

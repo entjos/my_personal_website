@@ -6,7 +6,7 @@
 # Website: joshua-entrop.com
 ################################################################################
 
-# Prefix --------------------------------------------------------------------------
+# Prefix -----------------------------------------------------------------------
 # Remove all files from ls
 rm(list = ls())
 
@@ -156,7 +156,7 @@ males <- delta_method(
 
 #   3.3 Plot survival function until 1000 days =================================
 
-# Creating the data for the plot --------------------------------------------------
+#     3.3.1 Creating the data for the plot #####################################
 # Looping over time
 survival <- lapply(seq(0, 1000, length = 300), \(i){
 
@@ -176,7 +176,7 @@ survival <- lapply(seq(0, 1000, length = 300), \(i){
 # Adding a time variable to the data.frame
 survival$t <- seq(0, 1000, length = 300)
 
-# Plotting ------------------------------------------------------------------------
+#     3.3.2 Plotting ###########################################################
 
 # Open new plot device
 plot.new()
