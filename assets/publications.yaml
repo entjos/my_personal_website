@@ -1,6 +1,10 @@
 ---
   - year: 2024
     publications:
+      - title: "Congestive heart failure after anthracycline-containing treatment for Hodgkin lymphoma: A Swedish matched cohort study"
+        authors: "Baech J, El-Galaly TC, Entrop JP, Glimelius I, Molin D, Godtfredsen SJ, Crowther MJ, Smedby KE, Eloranta S, Dietrich CE"
+        pdf: "https://doi.org/10.1002/jha2.1048"
+        bibtex: assets/bibtex/hl_hf.bib
       - title: "Utilisation of Healthcare in Children Born to Lymphoma Survivors in Sweden"
         authors: "Entrop JP; Wintzell V; Dietrich CE; Marklund A; Glimelius I; El-Galaly TC; Smedby KE; Eloranta S"
         info: "(pre-registered, ongoing research)"
