@@ -1,7 +1,7 @@
 ---
 pagetitle: "Joshua Entrop 👋 - Home"
-title: Joshua Philipp Entrop
-subtitle: Statistican | PhD student <br> [@Karolinska Institutet](https://ki.se/en/people/joshua-entrop)
+title: Joshua P Entrop, PhD
+subtitle: Statistican <br> [@Karolinska Institutet](https://ki.se/en/people/joshua-entrop)
 image: pictures/avatar.jpg
 image-alt: "Joshua looking happy after drinking a beer in Krakow"
 toc: false
@@ -29,7 +29,7 @@ about:
 
 # About me
 
-I am a PhD student and statistician working at [Karolinska Institutet](https://ki.se/en/people/joshua-entrop) with a passion for health data and statistical analyses. I am working in the research group on [cancer epidemiology](https://ki.se/en/meds/research-group-karin-ekstrom-smedby) within the department of medicine at Karolinska Institutet. My research interests lie within applied biostatistics and clinical epidemiology. I am interested in statistical and methodological challenges that come along with analysing registry and survival data. Within the research process, the phase of data analysis is the most interesting one for me. I love to apply different statistical models to data, to reveal new insights, which cannot be seen at the first glance.
+I am a statistician working at [Karolinska Institutet](https://ki.se/en/people/joshua-entrop) with a passion for health data and statistical analyses. I am working in the research group on [cancer epidemiology](https://ki.se/en/meds/research-group-karin-ekstrom-smedby) within the department of medicine at Karolinska Institutet. My research interests lie within applied biostatistics and clinical epidemiology. I am interested in statistical and methodological challenges that come along with analysing registry and survival data. Within the research process, the phase of data analysis is the most interesting one for me. I love to apply different statistical models to data, to reveal new insights, which cannot be seen at the first glance.
 
 All my blog posts on R are also kindly shared on the [R-bloggers](https://www.r-bloggers.com) website.
 
@@ -45,6 +45,9 @@ All my blog posts on R are also kindly shared on the [R-bloggers](https://www.r-
 ------------------------------------------------------------------------
 
 # Education
+
+**PhD Biostatics/Epidemiology** (2025)\
+Karolinska Institutet Stockholm, Sweden
 
 **MSc Public Health Epidemiology** (2020)\
 Karolinska Institutet Stockholm, Sweden

@@ -1,7 +1,7 @@
 ---
 pagetitle: "Joshua Entrop 👋 - Hem"
-title: Joshua Philipp Entrop
-subtitle: Statistiker | Doktorand <br> [@Karolinska Institutet](https://ki.se/personer/joshua-entrop)
+title: Joshua P Entrop, PhD
+subtitle: Statistiker <br> [@Karolinska Institutet](https://ki.se/personer/joshua-entrop)
 image: pictures/avatar.jpg
 image-alt: "Ein fröhlicher Joshua in Krakow"
 toc: false
@@ -29,7 +29,7 @@ about:
 
 # Om mig
 
-Som doktorand och statistiker vid [Karolinska Institutet](https://ki.se/personer/joshua-entrop) är jag en del av forskargruppen för [cancerepidemiologi](https://ki.se/meds/forskargrupp-karin-ekstrom-smedby). Mina forskningsintressen fokuserar på tillämpad biostatistik och klinisk epidemiologi. Jag fascineras av de statistiska och metodologiska utmaningarna som uppstår vid analys av register- och överlevnadsdata. Under forskningsprocessen är det speciellt stadiet av dataanalys som fångar mitt intresse mest. Att applicera olika statistiska modeller för att avslöja nya insikter, som kanske inte är uppenbara vid första anblicken, är något jag verkligen älskar.
+Som statistiker vid [Karolinska Institutet](https://ki.se/personer/joshua-entrop) är jag en del av forskargruppen för [cancerepidemiologi](https://ki.se/meds/forskargrupp-karin-ekstrom-smedby). Mina forskningsintressen fokuserar på tillämpad biostatistik och klinisk epidemiologi. Jag fascineras av de statistiska och metodologiska utmaningarna som uppstår vid analys av register- och överlevnadsdata. Under forskningsprocessen är det speciellt stadiet av dataanalys som fångar mitt intresse mest. Att applicera olika statistiska modeller för att avslöja nya insikter, som kanske inte är uppenbara vid första anblicken, är något jag verkligen älskar.
 
 ------------------------------------------------------------------------
 
@@ -43,6 +43,9 @@ Som doktorand och statistiker vid [Karolinska Institutet](https://ki.se/personer
 ------------------------------------------------------------------------
 
 # Utbildning
+
+**Doktor examen i Biostatistik/Epidemiologi** (2025)\
+Karolinska Institutet Stockholm, Sverige
 
 **Masterexamen i Epidemiologi** (2020)\
 Karolinska Institutet Stockholm, Sverige
