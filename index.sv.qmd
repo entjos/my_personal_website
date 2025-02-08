@@ -1,7 +1,7 @@
 ---
 pagetitle: "Joshua Entrop 👋 - Hem"
 title: Joshua P Entrop, PhD
-subtitle: Statistiker <br> [@Karolinska Institutet](https://ki.se/personer/joshua-entrop)
+subtitle: Biostatistiker <br> [@Karolinska Institutet](https://ki.se/personer/joshua-entrop)
 image: pictures/avatar.jpg
 image-alt: "Ein fröhlicher Joshua in Krakow"
 toc: false

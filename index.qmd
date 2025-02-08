@@ -1,7 +1,7 @@
 ---
 pagetitle: "Joshua Entrop 👋 - Home"
 title: Joshua P Entrop, PhD
-subtitle: Statistican <br> [@Karolinska Institutet](https://ki.se/en/people/joshua-entrop)
+subtitle: Biostatistician <br> [@Karolinska Institutet](https://ki.se/en/people/joshua-entrop)
 image: pictures/avatar.jpg
 image-alt: "Joshua looking happy after drinking a beer in Krakow"
 toc: false
@@ -46,7 +46,7 @@ All my blog posts on R are also kindly shared on the [R-bloggers](https://www.r-
 
 # Education
 
-**PhD Biostatics/Epidemiology** (2025)\
+**PhD Biostatistics/Epidemiology** (2025)\
 Karolinska Institutet Stockholm, Sweden
 
 **MSc Public Health Epidemiology** (2020)\
