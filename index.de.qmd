@@ -1,9 +1,9 @@
 ---
 pagetitle: "Joshua Entrop 👋 - Home"
-title: Joshua P Entrop, PhD
+title: Joshua Entrop, PhD
 subtitle: Biostatistiker <br> [@Karolinska Institutet](https://ki.se/en/people/joshua-entrop)
 image: pictures/avatar.jpg
-image-alt: "Ein fröhlicher Joshua in Krakow"
+image-alt: "Ein fröhlicher Joshua in Krakau"
 toc: false
 format: 
   html:
