@@ -44,6 +44,9 @@ p {
             <br><em><font size="-0.5"><%= items[i].publications[j].info %></font></em>
           <%} %>
           <br><em><font size="-0.5"><%= items[i].publications[j].authors %></font></em>
+          <% if(items[i].publications[j].journal != null) {%>
+            <br><font size="-0.5"><%= items[i].publications[j].journal %></font>
+          <%} %>
         </td>
       </tr>
     <%} %>
