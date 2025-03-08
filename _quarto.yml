@@ -15,7 +15,7 @@ website:
     site-name: Quarto
   page-footer:
     center:
-      - text: "<a href='/terms.html'>Terms</a> <br> &#169 Joshua Philipp Entrop 2024"
+      - text: "<a href='/terms.html'>Terms</a> <br> &#169 Joshua Philipp Entrop 2025"
 
   navbar:
     left:
@@ -29,14 +29,6 @@ website:
         text: Talks
       - href: software.qmd
         text: Software
-    right:
-      - href: index.qmd
-        text: EN
-      - href: index.de.qmd
-        text: DE
-      - href: index.sv.qmd
-        text: SV
-
 
 format:
   html:

@@ -1,7 +1,7 @@
 ---
 pagetitle: "Joshua Entrop 👋 - Home"
 title: Joshua Entrop, PhD
-subtitle: Biostatistician <br> [@Karolinska Institutet](https://ki.se/en/people/joshua-entrop)
+subtitle: Biostatistician <br> [@Red Door Analytics AB](https://reddooranalytics.se/about-us/joshua-entrop/)
 image: pictures/avatar.jpg
 image-alt: "Joshua looking happy after drinking a beer in Krakow"
 toc: false
@@ -29,7 +29,9 @@ about:
 
 # About me
 
-I am a statistician working at [Karolinska Institutet](https://ki.se/en/people/joshua-entrop) with a passion for health data and statistical analyses. I am working in the research group on [cancer epidemiology](https://ki.se/en/meds/research-group-karin-ekstrom-smedby) within the department of medicine at Karolinska Institutet. My research interests lie within applied biostatistics and clinical epidemiology. I am interested in statistical and methodological challenges that come along with analysing registry and survival data. Within the research process, the phase of data analysis is the most interesting one for me. I love to apply different statistical models to data, to reveal new insights, which cannot be seen at the first glance.
+I am a biostatistician working at [Red Door Analytics AB](https://reddooranalytics.se/about-us/joshua-entrop/) with a passion for health data and statistical analyses. My research interests lie in applied biostatistics and clinical epidemiology. I completed my PhD in Biostatistics/Epidemiology in 2025 at Karolinska Institutet, where I worked with the [cancer epidemiology group](https://ki.se/en/research/research-areas-centres-and-networks/research-groups/clinical-cancer-epidemiology-research-group-karin-ekstrom-smedby). My thesis focused on developing and applying modern statistical methods to study childbearing in lymphoma survivors.
+
+I am particularly drawn to the statistical and methodological challenges of analysing registry and survival data. For me, the most exciting part of the research process is to use novel statistical models to uncover insights that aren’t immediately apparent.
 
 All my blog posts on R are also kindly shared on the [R-bloggers](https://www.r-bloggers.com) website.
 
