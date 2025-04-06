@@ -25,7 +25,7 @@ Recurrent events are common in medical research including, e.g., heart attacks, 
 
 `ExclusionTable` is a package for you who works with epidemiological research or other studies in which you need to apply certain inclusion and exclusion criteria to your study population. Instead of counting observations before and after a `subset()` call, the `ExclusionTable()` function reports the number before and after each `subset()` call together with the number of observations that have been excluded. This is especially useful in observational studies for keeping track how many observations have been excluded for each in-/ or exclusion criteria. You just need to provide `ExclusionTable()` with a dataset and a list of logical filter statements.
 
-You can also find a blog post that showcases the use of ExclusionTabe [here](https://www.joshua-entrop.com/post/exclusion_table.qmd).
+You can also find a blog post that showcases the use of ExclusionTabe [here](https://www.joshua-entrop.com/post/exclusion_table.html).
 
 [CRAN](https://cran.r-project.org/package=ExclusionTable){.btn .btn-outline-primary .btn role="button"} [GitHub](https://github.com/entjos/ExclusionTable/){.btn .btn-outline-primary .btn role="button"} 
 [Pkgdown](https://entjos.github.io/ExclusionTable/){.btn .btn-outline-primary .btn role="button"}
@@ -47,6 +47,6 @@ This package is an implementation of tree-based scan statistics, that I develope
 [![CRAN status](https://www.r-pkg.org/badges/version/entjosR)](https://CRAN.R-project.org/package=entjosR)
 [![Codecov test coverage](https://codecov.io/gh/entjos/entjosR/branch/main/graph/badge.svg)](https://app.codecov.io/gh/entjos/entjosR?branch=main)
 
-`entjosR` is a package which I use for storing some miscellaneous R functions that I often use in my daily work. The package includes some function that make it easier to create descriptive and result tables by combining R and Excel. Another function in the package that I use quite a bit is `fpm_test_dfs()`, which helps you to specify the degrees of freedom for a flexible parametric survival model. If you're interested, you can also take a look at my blog article [*Testing degrees of freedom for generalised survival models in R*](https://www.joshua-entrop.com/post/fpm_test_dfs.qmd), which demonstrates the use of the function.
+`entjosR` is a package which I use for storing some miscellaneous R functions that I often use in my daily work. The package includes some function that make it easier to create descriptive and result tables by combining R and Excel. Another function in the package that I use quite a bit is `fpm_test_dfs()`, which helps you to specify the degrees of freedom for a flexible parametric survival model. If you're interested, you can also take a look at my blog article [*Testing degrees of freedom for generalised survival models in R*](https://www.joshua-entrop.com/post/fpm_test_dfs.html), which demonstrates the use of the function.
 
 [GitHub](https://github.com/entjos/entjosR/){.btn .btn-outline-primary .btn role="button"} [Pkgdown](https://entjos.github.io/entjosR/){.btn .btn-outline-primary .btn role="button"}
