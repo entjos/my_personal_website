@@ -1,4 +1,4 @@
 - source: project
   netlify:
     - id: c6a03c8f-eb17-4425-a35e-0b01832c266f
-      url: 'https://www.joshua-entrop.com'
+      url: https://www.joshua-entrop.com
