@@ -1,11 +1,16 @@
 ---
   - year: 2025
     publications:
+      - title: "Increased risk of hip and other major osteoporotic fractures within 18 months of lymphoma diagnosis—a national registry study of 36,864 Swedish lymphoma patients"
+        authors: "Lewerin C, Hallgerdur LK, Entrop J , Smedby KE, Mellström D"
+        journal: "Osteoporosis International"
+        pdf: https://doi.org/10.1007/s00198-025-07733-5
+        bibtex: assets/bibtex/10.1007-s00198-025-07733-5.bib
       - title: "Parametric Estimation of the Mean Number of Events in the Presence of Competing Risks"
         authors: "Entrop JP, Jakobsen LH, Crowther MJ, Clements M, Eloranta S, Dietrich CE"
         journal: "Biometrical Journal"
         pdf: https://doi.org/10.1002/bimj.70038
-        bibtex: 10.1002.bimj.70038.bib
+        bibtex: assets/bibtex/10.1002.bimj.70038.bib
   - year: 2024
     publications:
       - title: "Congestive heart failure after anthracycline-containing treatment for Hodgkin lymphoma: A Swedish matched cohort study"
@@ -14,37 +19,37 @@
         pdf: "https://doi.org/10.1002/jha2.1048"
         bibtex: assets/bibtex/hl_hf.bib
       - title: "Utilisation of Healthcare in Children Born to Lymphoma Survivors in Sweden"
-        authors: "Entrop JP; Wintzell V; Dietrich CE; Marklund A; Glimelius I; El-Galaly TC; Smedby KE; Eloranta S"
+        authors: "Entrop JP, Wintzell V, Dietrich CE, Marklund A, Glimelius I, El-Galaly TC, Smedby KE, Eloranta S"
         info: "(pre-registered, ongoing research)"
         osf: https://osf.io/sbevn
   - year: 2023
     publications:
       - title: "Reproduction patterns among non-Hodgkin lymphoma survivors by subtype in Sweden, Denmark and Norway: A population-based matched cohort study"
-        authors: "Entrop JP; Weibull CE; Smedby KE; Jakobsen LH; Øvlisen AK; Glimelius I; Marklund A; Larsen TS; Holte H; Fosså A; Smeland KB; El-Galaly TC; Eloranta S"
+        authors: "Entrop JP, Weibull CE, Smedby KE, Jakobsen LH, Øvlisen AK, Glimelius I, Marklund A, Larsen TS, Holte H, Fosså A, Smeland KB, El-Galaly TC, Eloranta S"
         journal: "British Journal of Haematology"
         osf: https://osf.io/x5j2q
         pdf: https://doi.org/10.1111/bjh.18938
         bibtex: assets/bibtex/fertility_by_NHL_subtype.bib
       - title: "Reproduction patterns among classical Hodgkin lymphoma survivors treated with BEACOPP and ABVD in Sweden, Denmark and Norway-A population-based matched cohort study"
-        authors: "Entrop JP; Weibull CE; Smedby KE; Jakobsen LH; Øvlisen AK; Molin D; Glimelius I; Marklund A; Holte H; Fosså A; Smeland KB; El-Galaly TC; Eloranta S"
+        authors: "Entrop JP, Weibull CE, Smedby KE, Jakobsen LH, Øvlisen AK, Molin D, Glimelius I, Marklund A, Holte H, Fosså A, Smeland KB, El-Galaly TC, Eloranta S"
         journal: "International Journal of Cancer"
         osf: https://osf.io/bw3mg
         pdf: https://doi.org/10.1002/ijc.34552
         bibtex: assets/bibtex/fertility_by_HL_trt.bib
       - title: "Nationwide Assessment of Patient Trajectories in Mantle Cell Lymphoma: The Swedish MCLcomplete Project"
-        authors: "Jerkeman M; Ekberg S; Glimelius I; Albertsson-Lindblad A; Entrop JP; Ellin F; Sonnevi K; Lewerin C; Brandefors L; Smedby KE"
+        authors: "Jerkeman M, Ekberg S, Glimelius I, Albertsson-Lindblad A, Entrop JP, Ellin F, Sonnevi K, Lewerin C, Brandefors L, Smedby KE"
         journal: "Hemasphere"
         pdf: https://doi.org/10.1097/HS9.0000000000000928
         bibtex: assets/bibtex/MCL_trt_trajectories_sweden.bib
   - year: 2021
     publications:
       - title: "Parenthood Rates and Use of Assisted Reproductive Techniques in Younger Hodgkin Lymphoma Survivors: A Danish Population-Based Study"
-        authors: "Øvlisen AK; Jakobsen LH; Eloranta S; Kragholm KH; Hutchings M; Frederiksen H; Kamper P; Dahl-Sørensen RB; Stoltenberg D; Weibull CE; Entrop JP; Glimelius I; Smedby KE; Torp-Pedersen C; Severinsen MT; El-Galaly TC"
+        authors: "Øvlisen AK, Jakobsen LH, Eloranta S, Kragholm KH, Hutchings M, Frederiksen H, Kamper P, Dahl-Sørensen RB, Stoltenberg D, Weibull CE, Entrop JP, Glimelius I, Smedby KE, Torp-Pedersen C, Severinsen MT, El-Galaly TC"
         journal: "Journal of Clinical Oncology"
         pdf: https://doi.org/10.1200/JCO.21.00357
         bibtex: bibtex/parenthood_rates_HL.bib
       - title: "Type 2 diabetes risk in sarcoidosis patients untreated and treated with corticosteroids"
-        authors: "Entrop JP; Kullberg S; Grunewald J; Eklund A; Brismar K; Arkema EV"
+        authors: "Entrop JP, Kullberg S, Grunewald J, Eklund A, Brismar K, Arkema EV"
         journal: European Respiratory Journal open research
         pdf: https://doi.org/10.1183/23120541.00028-2021
         bibtex: assets/bibtex/sacroidosis_T2D_risk.bib
