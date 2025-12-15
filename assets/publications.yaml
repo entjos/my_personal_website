@@ -1,6 +1,12 @@
 ---
   - year: 2025
     publications:
+      - title: "Utilisation of Healthcare in Children Born to Lymphoma Survivors in Sweden"
+        authors: "Entrop JP, Wintzell V, Dietrich CE, Marklund A, Glimelius I, El-Galaly TC, Smedby KE, Eloranta S"
+        journal: "Acta Oncologica"
+        osf: https://osf.io/sbevn
+        pdf: https://doi.org/10.2340/1651-226X.2025.43950
+        bibtex: assets/bibtex/10.2340-1651-226X.2025.43950.bib
       - title: "Increased risk of hip and other major osteoporotic fractures within 18 months of lymphoma diagnosis—a national registry study of 36,864 Swedish lymphoma patients"
         authors: "Lewerin C, Hallgerdur LK, Entrop J , Smedby KE, Mellström D"
         journal: "Osteoporosis International"
@@ -18,10 +24,6 @@
         journal: "eJHaem"
         pdf: "https://doi.org/10.1002/jha2.1048"
         bibtex: assets/bibtex/hl_hf.bib
-      - title: "Utilisation of Healthcare in Children Born to Lymphoma Survivors in Sweden"
-        authors: "Entrop JP, Wintzell V, Dietrich CE, Marklund A, Glimelius I, El-Galaly TC, Smedby KE, Eloranta S"
-        info: "(pre-registered, ongoing research)"
-        osf: https://osf.io/sbevn
   - year: 2023
     publications:
       - title: "Reproduction patterns among non-Hodgkin lymphoma survivors by subtype in Sweden, Denmark and Norway: A population-based matched cohort study"
